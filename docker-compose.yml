@@ -1,0 +1,17 @@
+version: '2'
+
+services:
+  app:
+    build: ./docker/node
+    command: npm start
+    volumes:
+    - ./:/srv/project
+    networks:
+    - local
+    ports:
+    - '9229:9229'
+networks:
+  local:
+    driver: bridge
+    ipam:
+      driver: default
