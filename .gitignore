@@ -1,0 +1,10 @@
+# IDEs
+nbproject/
+.idea/
+.vscode/
+.classpath
+.project
+.settings/
+
+.idea/
+node_modules/
