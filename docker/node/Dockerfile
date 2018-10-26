@@ -1,7 +1,9 @@
 FROM node:10.12
 
-RUN mkdir /srv/project && chown -R node:node /srv/project
+USER node
 
-WORKDIR /srv/project
+RUN mkdir /home/node/app
+
+WORKDIR /home/node/app
 
 CMD npm start

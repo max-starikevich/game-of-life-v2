@@ -3,13 +3,14 @@ version: '2'
 services:
   app:
     build: ./docker/node
-    command: npm start
+    command: npm run start
     volumes:
-    - ./:/srv/project
+    - ./:/home/node/app
     networks:
     - local
     ports:
     - '9229:9229'
+    - '3000:3000'
 networks:
   local:
     driver: bridge
