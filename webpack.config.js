@@ -1,9 +1,17 @@
 const path = require('path')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
-  entry: './src/client/main.jsx',
+  entry: {
+    styles: './src/client/styles/main.scss',
+    main: './src/client/main.jsx',
+  },
   module: {
     rules: [
+      {
+        test: /\.hbs$/,
+        loader: 'handlebars-loader'
+      },
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
@@ -22,7 +30,8 @@ module.exports = {
   output: {
     path: __dirname + '/dist',
     publicPath: '/',
-    filename: 'bundle.js'
+    filename: 'bundle-[name].[hash].js',
+    chunkFilename: 'chunk-[name].[hash].js',
   },
   devServer: {
     contentBase: './dist',
@@ -32,8 +41,15 @@ module.exports = {
   },
   resolve: {
     alias: {
+      client: path.resolve(__dirname, 'src/client/'),
       components: path.resolve(__dirname, 'src/client/components'),
     },
     extensions: ['*', '.js', '.jsx']
-  }
+  },
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: 'src/client/templates/layout.hbs',
+      inject: false
+    })
+  ]
 }

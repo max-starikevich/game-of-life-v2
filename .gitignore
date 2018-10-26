@@ -9,6 +9,5 @@ nbproject/
 node_modules/
 
 /data/
-
+/logs/
 /dist/
-!/dist/index.html

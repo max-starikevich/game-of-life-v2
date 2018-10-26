@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Game of Life</title>
+    </head>
+    <body>
+        <div id="app"></div>
+
+        <!-- webpack header assets -->
+        {{#each htmlWebpackPlugin.files.chunks}}
+            <script src="{{this.entry}}" class="js-webpack-asset"></script>
+        {{/each}}
+        <!-- ./webpack header assets -->
+    </body>
+</html>
