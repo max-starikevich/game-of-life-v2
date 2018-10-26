@@ -1,7 +1,7 @@
 {
   "name": "game-of-life-2018",
   "version": "0.0.1",
-  "description": "Learn project to practice some React / Node.js stuff",
+  "description": "One more 'Game of Life' implementation",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
