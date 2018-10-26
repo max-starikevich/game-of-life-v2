@@ -6,6 +6,7 @@ services:
     command: npm run start
     volumes:
     - ./:/home/node/app
+    - ./logs/npm:/home/node/.npm/_logs
     networks:
     - local
     ports:
