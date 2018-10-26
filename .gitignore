@@ -1,10 +1,14 @@
-# IDEs
 nbproject/
 .idea/
 .vscode/
 .classpath
 .project
 .settings/
-
 .idea/
+
 node_modules/
+
+/data/
+
+/dist/
+!/dist/index.html
