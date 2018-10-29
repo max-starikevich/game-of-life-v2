@@ -1,10 +1,10 @@
 FROM node:10.12
 
+RUN mkdir /home/node/.npm && chown -R node:node /home/node/.npm
+
 RUN npm install -g npx
 
 USER node
-
-RUN mkdir /home/node/app
 
 WORKDIR /home/node/app
 
