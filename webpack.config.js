@@ -36,8 +36,13 @@ module.exports = {
   devServer: {
     contentBase: './dist',
     host: '0.0.0.0',
-    port: '3000',
-    historyApiFallback: true
+    port: '8080',
+    historyApiFallback: true,
+    proxy: {
+      '/socket/': {
+        target: 'http://backend:3000/socket/',
+      }
+    }
   },
   resolve: {
     alias: {
