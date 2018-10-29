@@ -3,7 +3,7 @@ version: '2'
 services:
   app:
     build: ./docker/node
-    command: npm run start
+    command: npm run backend-dev
     volumes:
     - ./:/home/node/app
     - ./logs/npm:/home/node/.npm/_logs
@@ -12,6 +12,17 @@ services:
     ports:
     - '9229:9229'
     - '3000:3000'
+  nginx:
+    build: ./docker/nginx
+    volumes:
+    - ./dist:/var/www
+    - ./logs/nginx:/var/log/nginx
+    links:
+      - app
+    ports:
+    - '80:80'
+    networks:
+    - local
 networks:
   local:
     driver: bridge
