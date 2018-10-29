@@ -5,15 +5,17 @@ const app = new Koa()
 const server = require('http').createServer(app.callback())
 const io = require('socket.io')(server)
 
-const Core = require('./lib/Core')
+const Game = require('./lib/Game.js')
 
-const gameCore = new Core(io)
+const instance = new Game(io)
 
-gameCore.startServer()
+instance.startServer().then(() => {
+  console.log('Game of Life is online')
+})
 
 server.listen(3000, '0.0.0.0')
 
-app.use(async (ctx, next) => {
+app.use(async (ctx) => {
   ctx.type = 'html'
   ctx.body = 'OK'
 })

@@ -6,8 +6,7 @@ class Communication {
   }
 
   connectClient(socket) {
-
-    try {
+    return new Promise(((resolve) => {
       let clientId = socket.id
 
       this.connectedClients.set(clientId, {
@@ -15,15 +14,12 @@ class Communication {
         socket: socket
       })
 
-      return clientId
-    } catch (e) {
-      console.err(e)
-    }
+      resolve(clientId)
+    }))
   }
 
   disconnectClient(clientId) {
-
-    try {
+    return new Promise(((resolve) => {
       let client = this.connectedClients.get(clientId)
 
       if(client && client.socket) {
@@ -31,29 +27,24 @@ class Communication {
       }
 
       this.connectedClients.delete(clientId)
-    } catch(e) {
-      console.error(e)
-    }
+
+      resolve()
+    }))
   }
 
   establish() {
+    return new Promise(((resolve) => {
+      this.io.on('connection', async (socket) => {
 
-    try {
-      this.io.on('connection', (socket) => {
+        let clientId = await this.connectClient(socket)
 
-        let clientId = this.connectClient(socket)
-
-        socket.on('disconnect', () => {
-          if(socket.id) {
-            this.disconnectClient(clientId)
-          }
+        socket.on('disconnect', async () => {
+          await this.disconnectClient(clientId)
         })
       })
 
-    } catch(e) {
-      console.error(e)
-    }
-
+      resolve()
+    }))
   }
 }
 
