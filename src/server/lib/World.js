@@ -9,7 +9,7 @@ class World {
     this.worldField = []
   }
 
-  async buildField() {
+  async build() {
 
     return new Promise(async (resolve) => {
       let x = this.state.size[0]
@@ -24,13 +24,13 @@ class World {
         }
       }
 
-      await this.clearField()
+      await this.clear()
 
       resolve()
     })
   }
 
-  clearField() {
+  clear() {
     return new Promise((resolve) => {
       let x = this.state.size[0]
       let y = this.state.size[1]

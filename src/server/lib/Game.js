@@ -9,7 +9,7 @@ class Game {
 
   async startServer() {
     await this.communication.establish()
-    await this.world.buildField()
+    await this.world.build()
   }
 }
 
