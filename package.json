@@ -5,10 +5,10 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --config ./webpack.config.js",
-    "frontend-dev": "webpack-dev-server --config ./webpack.config.js --mode development",
-    "backend-dev": "nodemon --inspect=0.0.0.0:9229 main.js",
-    "start": "exit 0"
+    "start": "exit 0",
+    "build": "webpack --config ./webpack.config.js --mode production",
+    "dev:frontend": "webpack-dev-server --config ./webpack.config.js --mode development",
+    "dev:backend": "nodemon --inspect=0.0.0.0:9229 main.js"
   },
   "repository": {
     "type": "git",
