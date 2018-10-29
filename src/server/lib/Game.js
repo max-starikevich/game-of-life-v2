@@ -9,7 +9,21 @@ class Game {
 
   async startServer() {
     await this.communication.establish()
+    await this.prepareEvents()
     await this.world.build()
+  }
+
+  prepareEvents() {
+    return new Promise((resolve => {
+      this.communication.on('worldChange', (data) => {
+        this.handleClientChange(data)
+      })
+      resolve()
+    }))
+  }
+
+  handleClientChange(data) {
+    console.log(data)
   }
 }
 

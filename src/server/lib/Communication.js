@@ -1,6 +1,9 @@
-class Communication {
+const EventEmitter = require('events')
+
+class Communication extends EventEmitter {
 
   constructor(io) {
+    super()
     this.io = io
     this.connectedClients = new Map()
   }
@@ -12,6 +15,14 @@ class Communication {
       this.connectedClients.set(clientId, {
         id: clientId,
         socket: socket
+      })
+
+      socket.on('disconnect', async () => {
+        await this.disconnectClient(clientId)
+      })
+
+      socket.on('client-cell-change', (data) => {
+        console.log(`Position is ${data.position}. Value is ${data.value}`)
       })
 
       resolve(clientId)
@@ -35,14 +46,8 @@ class Communication {
   establish() {
     return new Promise(((resolve) => {
       this.io.on('connection', async (socket) => {
-
         let clientId = await this.connectClient(socket)
-
-        socket.on('disconnect', async () => {
-          await this.disconnectClient(clientId)
-        })
       })
-
       resolve()
     }))
   }
