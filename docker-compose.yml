@@ -1,24 +1,36 @@
 version: '2'
 
 services:
-  app:
+  backend:
     build: ./docker/node
-    command: npm run backend-dev
+    command: npm run dev:backend
     volumes:
     - ./:/home/node/app
     - ./logs/npm:/home/node/.npm/_logs
     networks:
     - local
     ports:
-    - '9229:9229'
     - '3000:3000'
+    - '9229:9229'
+  frontend:
+    build: ./docker/node
+    command: npm run dev:frontend
+    volumes:
+    - ./:/home/node/app
+    - ./logs/npm:/home/node/.npm/_logs
+    links:
+      - nginx
+    networks:
+    - local
+    ports:
+    - '8080:8080'
   nginx:
     build: ./docker/nginx
     volumes:
     - ./dist:/var/www
     - ./logs/nginx:/var/log/nginx
     links:
-      - app
+      - backend
     ports:
     - '80:80'
     networks:
