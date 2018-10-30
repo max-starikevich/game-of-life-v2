@@ -1,53 +1,45 @@
-class World {
-  constructor(size = [10, 10], rate = 100) {
+const EventEmitter = require('events')
+
+class World extends EventEmitter {
+  constructor() {
+    super()
 
     this.state = {
-      size,
-      rate
+      size: [10, 10],
+      rate: 100,
+      world: []
+    }
+  }
+
+  build() {
+    let x = this.state.size[0]
+    let y = this.state.size[1]
+
+    for(let i = 0; i < x; i++) {
+
+      this.state.world[i] = Array(y)
+
+      for(let j = 0; j < y; j++) {
+        this.state.world[i][j] = 0
+      }
+    }
+  }
+
+  applyChanges(affectedCells = []) {
+
+    let changed = false
+
+    for(let cell of affectedCells) {
+      let { x, y, value } = cell
+      this.state.world[x][y] = value
+
+      if(!changed) {
+        changed = true
+      }
     }
 
-    this.worldField = []
-  }
-
-  async build() {
-
-    return new Promise(async (resolve) => {
-      let x = this.state.size[0]
-      let y = this.state.size[1]
-
-      for(let i = 0; i < x; i++) {
-
-        this.worldField[i] = Array(y)
-
-        for(let j = 0; j < y; j++) {
-          this.worldField[i][j] = 0
-        }
-      }
-
-      await this.clear()
-
-      resolve()
-    })
-  }
-
-  clear() {
-    return new Promise((resolve) => {
-      let x = this.state.size[0]
-      let y = this.state.size[1]
-
-      for(let i = 0; i < x; i++) {
-        for(let j = 0; j < y; j++) {
-          this.worldField[i][j] = this.setCellState(i, j, 0)
-        }
-      }
-
-      resolve()
-    })
-  }
-
-  setCellState(x, y, state) {
-    if(this.worldField[x][y]) {
-      this.worldField[x][y] = state
+    if(changed) {
+      this.emit('world-change-server', affectedCells)
     }
   }
 }

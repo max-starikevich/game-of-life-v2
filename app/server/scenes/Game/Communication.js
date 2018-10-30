@@ -2,54 +2,57 @@ const EventEmitter = require('events')
 
 class Communication extends EventEmitter {
 
-  constructor(io) {
+  constructor(io, eventList = []) {
     super()
     this.io = io
-    this.connectedClients = new Map()
+    this.clients = new Map()
+    this.eventList = eventList
   }
 
-  connectClient(socket) {
-    return new Promise(((resolve) => {
-      let clientId = socket.id
-
-      this.connectedClients.set(clientId, {
-        id: clientId,
-        socket: socket
-      })
-
-      socket.on('disconnect', async () => {
-        await this.disconnectClient(clientId)
-      })
-
-      socket.on('client-cell-change', (data) => {
-        console.log(`Position is ${data.position}. Value is ${data.value}`)
-      })
-
-      resolve(clientId)
-    }))
+  async establish() {
+    this.io.on('connection', (socket) => {
+      this.onConnectedClient(socket)
+    })
   }
 
-  disconnectClient(clientId) {
-    return new Promise(((resolve) => {
-      let client = this.connectedClients.get(clientId)
+  onConnectedClient(socket) {
+    let clientId = socket.id
 
-      if(client && client.socket) {
-        client.socket.disconnect(true)
-      }
+    console.log(`Client ${clientId} connected`)
 
-      this.connectedClients.delete(clientId)
+    this.clients.set(clientId, {
+      id: clientId,
+      socket: socket
+    })
 
-      resolve()
-    }))
+    socket.on('disconnect', () => {
+      this.onDisconnectedClient(clientId)
+      console.log(`Client ${clientId} disconnected`)
+    })
+
+    for(let eventName of this.eventList) {
+      socket.on(eventName, (data) => {
+        this.onClientMessage(eventName, data)
+      })
+    }
   }
 
-  establish() {
-    return new Promise(((resolve) => {
-      this.io.on('connection', async (socket) => {
-        let clientId = await this.connectClient(socket)
-      })
-      resolve()
-    }))
+  onClientMessage(eventName, data) {
+    this.emit(eventName, data)
+  }
+
+  onDisconnectedClient(clientId) {
+    let client = this.clients.get(clientId)
+
+    if(client && client.socket) {
+      client.socket.disconnect(true)
+    }
+
+    this.clients.delete(clientId)
+  }
+
+  broadcast(eventName, data) {
+    this.io.sockets.emit(eventName, data)
   }
 }
 

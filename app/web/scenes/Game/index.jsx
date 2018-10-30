@@ -9,16 +9,17 @@ class Game extends Component {
   constructor() {
     super()
 
-    this.socket = io('http://localhost:3000')
+    this.establishConnection()
 
     this.state = {
       rate: 100,
       generations: {
         current: 1
-      }
+      },
+      world: []
     }
 
-    this.world = []
+    this.handleClick = this.handleClick.bind(this)
   }
 
   render() {
@@ -29,10 +30,49 @@ class Game extends Component {
         </div>
 
         <div className="world">
-          <World world={this.world} state={this.state} />
+          <World state={this.state} />
         </div>
+
+        <button onClick={this.handleClick}>
+          Send test data
+        </button>
       </div>
     )
+  }
+
+  establishConnection() {
+    this.socket = io('http://localhost:3000')
+
+    this.socket.on('world-change-server', (data) => {
+      this.onWorldChangedServer(data)
+    })
+  }
+
+  sendData(eventName, data) {
+    this.socket.emit(eventName, data)
+  }
+
+  handleClick(e) {
+    this.onWorldChangedClient([
+      {
+        x: 0,
+        y: 0,
+        value: 0
+      },
+      {
+        x: 1,
+        y: 0,
+        value: 1
+      }
+    ])
+  }
+
+  onWorldChangedServer(affectedCells) {
+
+  }
+
+  onWorldChangedClient(affectedCells) {
+    this.sendData('world-change-client', affectedCells)
   }
 }
 

@@ -1,29 +1,36 @@
 const Communication = require('./Communication.js')
 const World = require('./World.js')
 
+const triggerClientEventsList = [
+  'world-change-client'
+]
+
 class Core {
+
   constructor(io) {
-    this.communication = new Communication(io)
+    this.communication = new Communication(io, triggerClientEventsList)
     this.world = new World()
   }
 
   async startServer() {
     await this.communication.establish()
-    await this.prepareEvents()
+    this.communication.on('world-change-client', (...data) => {
+      this.onWorldChangeClient(...data)
+    })
+
     await this.world.build()
+    this.world.on('world-change-server', (...data) => {
+      this.onWorldChangeServer(...data)
+    })
   }
 
-  prepareEvents() {
-    return new Promise((resolve => {
-      this.communication.on('worldChange', (data) => {
-        this.handleClientChange(data)
-      })
-      resolve()
-    }))
+  onWorldChangeClient(affectedCells) {
+    this.world.applyChanges(affectedCells)
+    console.log(`onWorldChangeClient:`, affectedCells)
   }
 
-  handleClientChange(data) {
-    console.log(data)
+  onWorldChangeServer(affectedCells) {
+    this.communication.broadcast('world-change-server', affectedCells)
   }
 }
 
