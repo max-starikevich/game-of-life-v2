@@ -4,10 +4,12 @@ class Footer extends Component {
   render() {
     return (
       <footer>
-        Footer
+        Footer container
       </footer>
     )
   }
 }
 
-export default Footer
+export {
+  Footer
+}

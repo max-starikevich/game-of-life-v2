@@ -3,8 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: {
-    styles: './src/client/styles/main.scss',
-    main: './src/client/main.jsx',
+    main: './app/web/main.jsx',
   },
   module: {
     rules: [
@@ -46,14 +45,13 @@ module.exports = {
   },
   resolve: {
     alias: {
-      client: path.resolve(__dirname, 'src/client/'),
-      components: path.resolve(__dirname, 'src/client/components'),
+      scenes: path.resolve(__dirname, 'app/web/scenes'),
     },
     extensions: ['*', '.js', '.jsx']
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'src/client/templates/layout.hbs',
+      template: 'app/web/templates/layout.hbs',
       inject: false
     })
   ]

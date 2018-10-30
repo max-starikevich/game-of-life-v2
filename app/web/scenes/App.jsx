@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
-import Header from 'components/Header'
-import Footer from 'components/Footer'
-import Game from 'components/Game'
+import { Header } from 'scenes/Layout/Header'
+import { Footer } from 'scenes/Layout/Footer'
+import { Game } from 'scenes/Game'
 
 class App extends Component {
   render() {
@@ -11,9 +11,7 @@ class App extends Component {
       <Router>
         <div className="app-container">
           <Header/>
-
           <Route exact path="/" component={Game} />
-
           <Footer/>
         </div>
       </Router>
@@ -21,4 +19,6 @@ class App extends Component {
   }
 }
 
-export default App
+export {
+  App
+}

@@ -1,7 +1,7 @@
 const Communication = require('./Communication.js')
 const World = require('./World.js')
 
-class Game {
+class Core {
   constructor(io) {
     this.communication = new Communication(io)
     this.world = new World()
@@ -27,4 +27,4 @@ class Game {
   }
 }
 
-module.exports = Game
+module.exports = Core
