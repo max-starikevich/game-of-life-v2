@@ -16,7 +16,8 @@ class Game extends Component {
       rate: null,
       generation: null,
       size: null,
-      world: null
+      world: null,
+      clientsCount: null
     }
 
     this.onStopLifeCycle = this.onStopLifeCycle.bind(this)
@@ -57,7 +58,8 @@ class Game extends Component {
       <div className="game">
         <Header generation={this.state.generation}
                 rate={this.state.rate}
-                size={this.state.size} />
+                size={this.state.size}
+                clientsCount={this.state.clientsCount} />
 
         <World world={this.state.world}
                handleCellClick={this.onCellClick} />
@@ -71,13 +73,14 @@ class Game extends Component {
 
   onWorldUpdate(data) {
     return new Promise(resolve => {
-      let { world, generation, rate, size } = data
+      let { world, generation, rate, size, clientsCount } = data
 
       this.setState({
         size,
         rate,
         generation,
         world,
+        clientsCount
       })
 
       document.title = `Generation #${generation}`

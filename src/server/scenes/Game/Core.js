@@ -70,15 +70,26 @@ class Core {
   }
 
   broadcastWorld () {
-    this.communication.broadcast('world-update', this.world.export())
+    this.communication.broadcast('world-update', this.export())
   }
 
   sendWorldToClient (socket) {
-    this.communication.sendToClient(socket, 'world-update', this.world.export())
+    this.communication.sendToClient(socket, 'world-update', this.export())
   }
 
   registerCellsChange(cells) {
     this.world.modifyCells(cells)
+  }
+
+  export() {
+
+    let exportedWorld = this.world.export()
+    let clientsCount = this.communication.clients.size
+
+    return {
+      ...exportedWorld,
+      clientsCount
+    }
   }
 }
 
