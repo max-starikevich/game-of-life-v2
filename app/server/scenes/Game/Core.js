@@ -11,6 +11,9 @@ const eventHandlers = {
   'randomize-world': (core) => {
     core.randomizeWorld()
     core.broadcastWorld()
+  },
+  'world-update-request': (core, data, socket) => {
+    core.sendWorldToClient(socket)
   }
 }
 
@@ -25,8 +28,8 @@ class Core {
     await this.communication.establish()
 
     Object.keys(eventHandlers).map(eventName => {
-      this.communication.on(eventName, (data) => {
-        this.onClientAction(eventName, data)
+      this.communication.on(eventName, (data, socket) => {
+        this.onClientAction(eventName, data, socket)
       })
     })
 
@@ -34,7 +37,7 @@ class Core {
 
     this.world.randomize()
 
-    this.world.on('new-world-built', () => {
+    this.world.on('world-update', () => {
       this.onNewWorldBuilt()
     })
 
@@ -45,6 +48,7 @@ class Core {
 
   startGame() {
     console.log('Starting lifecycle')
+
     this.world.startLifeCycle().then(() => {
       console.log('Lifecycle stopped')
     })
@@ -58,8 +62,8 @@ class Core {
     this.world.randomize()
   }
 
-  onClientAction(eventName, data) {
-    eventHandlers[eventName](this, data)
+  onClientAction(eventName, data, socket) {
+    eventHandlers[eventName](this, data, socket)
   }
 
   onNewWorldBuilt() {
@@ -67,7 +71,11 @@ class Core {
   }
 
   broadcastWorld() {
-    this.communication.broadcast('new-world-built', this.world.exportWorld())
+    this.communication.broadcast('world-update', this.world.export())
+  }
+
+  sendWorldToClient(socket) {
+    this.communication.sendToClient(socket, 'world-update', this.world.export())
   }
 }
 

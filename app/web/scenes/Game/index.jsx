@@ -5,6 +5,8 @@ import { World } from './components/World'
 import { Header } from './components/Header'
 import { Controls } from './components/Controls'
 
+const WORLD_REQUEST_TIMEOUT = 500
+
 class Game extends Component {
 
   constructor() {
@@ -16,8 +18,7 @@ class Game extends Component {
       rate: null,
       generation: null,
       size: null,
-      world: null,
-      worldText: null
+      world: null
     }
 
     this.onStopLifeCycle = this.onStopLifeCycle.bind(this)
@@ -28,9 +29,23 @@ class Game extends Component {
   establishConnection() {
     this.socket = io('http://localhost:3000')
 
-    this.socket.on('new-world-built', (data) => {
-      this.onNewWorldBuilt(data)
+    this.socket.on('world-update', (data) => {
+      this.onWorldUpdate(data)
     })
+
+    setTimeout(() => {
+      if(this.state.world === null) {
+        this.requestWorldUpdate()
+      }
+    }, WORLD_REQUEST_TIMEOUT)
+  }
+
+  requestWorldUpdate() {
+    this.sendToServer('world-update-request')
+  }
+
+  sendToServer(eventName, data = null) {
+    this.socket.emit(eventName, data)
   }
 
   render() {
@@ -44,40 +59,38 @@ class Game extends Component {
 
         <Controls stopLifeCycle={this.onStopLifeCycle}
                   startLifeCycle={this.onStartLifeCycle}
-                  randomizeWorld={this.onRandomizeWorld}
-        />
+                  randomizeWorld={this.onRandomizeWorld} />
       </div>
     )
   }
 
-  onNewWorldBuilt(data) {
+  onWorldUpdate(data) {
+    return new Promise(resolve => {
+      let { world, generation, rate, size } = data
 
-    let { world, generation, rate, size } = data
+      this.setState({
+        size,
+        rate,
+        generation,
+        world,
+      })
 
-    this.setState({
-      size,
-      rate,
-      generation,
-      world,
+      document.title = `Generation #${generation}`
+
+      resolve()
     })
-
-    document.title = `Generation #${generation}`
   }
 
   onStopLifeCycle() {
-    this.sendData('stop-lifecycle')
+    this.sendToServer('stop-lifecycle')
   }
 
   onStartLifeCycle() {
-    this.sendData('start-lifecycle')
+    this.sendToServer('start-lifecycle')
   }
 
   onRandomizeWorld() {
-    this.sendData('randomize-world')
-  }
-
-  sendData(eventName, data = null) {
-    this.socket.emit(eventName, data)
+    this.sendToServer('randomize-world')
   }
 }
 

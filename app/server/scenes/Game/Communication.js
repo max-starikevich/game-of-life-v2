@@ -31,13 +31,13 @@ class Communication extends EventEmitter {
 
     for(let eventName of this.eventList) {
       socket.on(eventName, (data) => {
-        this.onClientMessage(eventName, data)
+        this.onClientMessage(eventName, data, socket)
       })
     }
   }
 
-  onClientMessage(eventName, data) {
-    this.emit(eventName, data)
+  onClientMessage(eventName, data, socket) {
+    this.emit(eventName, data, socket)
   }
 
   onDisconnectedClient(clientId) {
@@ -52,6 +52,10 @@ class Communication extends EventEmitter {
 
   broadcast(eventName, data) {
     this.io.sockets.emit(eventName, data)
+  }
+
+  sendToClient(socket, eventName, data) {
+    socket.emit(eventName, data)
   }
 }
 

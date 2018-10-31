@@ -63,7 +63,7 @@ class World extends EventEmitter {
 
     console.log(`Generation #${this.generation} is ready`)
 
-    this.emit('new-world-built')
+    this.emit('world-update')
 
     if(!(lifeCount > 0)) {
       this.emit('world-died')
@@ -177,7 +177,7 @@ class World extends EventEmitter {
     return neighborsCount;
   }
 
-  exportWorld() {
+  export() {
     return {
       rate: this.rate,
       size: this.size,
