@@ -24,17 +24,17 @@ services:
     - local
     ports:
     - '8080:8080'
-  nginx:
-    build: ./docker/nginx
-    volumes:
-    - ./dist:/var/www
-    - ./logs/nginx:/var/log/nginx
-    links:
-      - backend
-    ports:
-    - '80:80'
-    networks:
-    - local
+#  nginx:
+#    build: ./docker/nginx
+#    volumes:
+#    - ./dist:/var/www
+#    - ./logs/nginx:/var/log/nginx
+#    links:
+#      - backend
+#    ports:
+#    - '80:80'
+#    networks:
+#    - local
 networks:
   local:
     driver: bridge
