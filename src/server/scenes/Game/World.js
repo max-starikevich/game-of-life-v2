@@ -39,6 +39,11 @@ class World extends EventEmitter {
   }
 
   async startLifeCycle (rate = this.rate) {
+
+    if(this.cycleIsActive) {
+      return
+    }
+
     try {
       this.cycleIsActive = true
 
