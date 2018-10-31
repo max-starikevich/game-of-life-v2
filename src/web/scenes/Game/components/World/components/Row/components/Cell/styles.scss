@@ -6,8 +6,14 @@
 
   border: 1px solid grey;
 
+  cursor: pointer;
+
   &.dead {
     background-color: white;
+
+    &:hover {
+      background-color: red;
+    }
   }
 
   &.alive {
