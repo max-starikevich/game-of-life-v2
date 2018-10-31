@@ -63,8 +63,6 @@ class World extends EventEmitter {
       lifeCount
     } = await this.getNextGeneration()
 
-    console.log(`Generation #${this.generation} is ready`)
-
     this.emit('world-update')
 
     if (!(lifeCount > 0)) {
