@@ -1,5 +1,5 @@
 const Communication = require('./Communication.js')
-const World = require('./World.js')
+const Playground = require('./Playground')
 
 const triggerClientEventsList = [
   'world-change-client'
@@ -9,7 +9,7 @@ class Core {
 
   constructor(io) {
     this.communication = new Communication(io, triggerClientEventsList)
-    this.world = new World()
+    this.playground = new Playground()
   }
 
   async startServer() {
@@ -18,14 +18,14 @@ class Core {
       this.onWorldChangeClient(...data)
     })
 
-    await this.world.build()
-    this.world.on('world-change-server', (...data) => {
+    await this.playground.build()
+    this.playground.on('world-change-server', (...data) => {
       this.onWorldChangeServer(...data)
     })
   }
 
   onWorldChangeClient(affectedCells) {
-    this.world.applyChanges(affectedCells)
+    this.playground.applyChanges(affectedCells)
     console.log(`onWorldChangeClient:`, affectedCells)
   }
 
