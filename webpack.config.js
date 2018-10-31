@@ -46,6 +46,7 @@ module.exports = {
   resolve: {
     alias: {
       scenes: path.resolve(__dirname, 'app/web/scenes'),
+      shared: path.resolve(__dirname, 'app/shared'),
     },
     extensions: ['*', '.js', '.jsx']
   },

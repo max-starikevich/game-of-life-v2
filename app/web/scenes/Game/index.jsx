@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
 import io from 'socket.io-client'
 
-import { World } from 'scenes/Game/World'
-import { Header } from 'scenes/Game/Header'
+import { World } from 'scenes/Game/components/World'
+import { Header } from 'scenes/Game/components/Header'
+
+const WorldHelper = require('shared/WorldHelpers')
 
 class Game extends Component {
 
@@ -12,30 +14,32 @@ class Game extends Component {
     this.establishConnection()
 
     this.state = {
-      rate: 100,
-      generations: {
-        current: 1
-      },
-      world: []
+      rate: null,
+      generation: null,
+      size: null,
+      world: null,
+      worldText: null
     }
-
-    this.handleClick = this.handleClick.bind(this)
   }
 
   render() {
+
+    let headerContainer = null
+    let gameContainer = null
+
+    if(this.state.world) {
+      headerContainer = <Header generation={this.state.generation}
+                                rate={this.state.rate}
+                                size={this.state.size}/>
+
+      gameContainer = <World world={this.state.world}
+                             worldText={this.state.worldText}/>
+    }
+
     return (
-      <div className="game-container">
-        <div className="header">
-          <Header state={this.state} />
-        </div>
-
-        <div className="world">
-          <World state={this.state} />
-        </div>
-
-        <button onClick={this.handleClick}>
-          Send test data
-        </button>
+      <div className="game">
+        { headerContainer }
+        { gameContainer }
       </div>
     )
   }
@@ -43,8 +47,8 @@ class Game extends Component {
   establishConnection() {
     this.socket = io('http://localhost:3000')
 
-    this.socket.on('world-change-server', (data) => {
-      this.onWorldChangedServer(data)
+    this.socket.on('next-generation-built', (data) => {
+      this.onNextGeneration(data)
     })
   }
 
@@ -52,23 +56,19 @@ class Game extends Component {
     this.socket.emit(eventName, data)
   }
 
-  handleClick(e) {
-    this.onWorldChangedClient([
-      {
-        x: 0,
-        y: 0,
-        value: 0
-      },
-      {
-        x: 1,
-        y: 0,
-        value: 1
-      }
-    ])
-  }
+  onNextGeneration(data) {
 
-  onWorldChangedServer(affectedCells) {
+    let { world, generation, rate, size } = data
 
+    let worldText = WorldHelper.printWorld(world, generation, true)
+
+    this.setState({
+      size,
+      rate,
+      generation,
+      world,
+      worldText,
+    })
   }
 
   onWorldChangedClient(affectedCells) {

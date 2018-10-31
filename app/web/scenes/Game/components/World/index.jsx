@@ -8,7 +8,9 @@ class World extends Component {
   render() {
     return (
       <div className="world">
-        World component
+        <pre>
+          {this.props.worldText}
+        </pre>
       </div>
     )
   }

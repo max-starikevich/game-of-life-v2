@@ -2,7 +2,7 @@ const Communication = require('./Communication')
 const World = require('./World')
 
 const triggerClientEventsList = [
-  'world-change-client'
+  'cells-changed-client'
 ]
 
 class Core {
@@ -13,13 +13,15 @@ class Core {
 
   async prepareGame() {
     await this.communication.establish()
-    this.communication.on('world-change-client', (...data) => {
+
+    this.communication.on('cells-changed-client', (...data) => {
       this.onWorldChangeClient(...data)
     })
 
     await this.world.build()
-    this.world.on('world-change-server', (...data) => {
-      this.onWorldChangeServer(...data)
+
+    this.world.on('next-generation-built', () => {
+      this.onNextGeneration()
     })
   }
 
@@ -33,8 +35,8 @@ class Core {
     console.log(`onWorldChangeClient:`, affectedCells)
   }
 
-  onWorldChangeServer(affectedCells) {
-    this.communication.broadcast('world-change-server', affectedCells)
+  onNextGeneration() {
+    this.communication.broadcast('next-generation-built', this.world.exportWorld())
   }
 }
 

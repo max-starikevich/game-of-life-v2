@@ -8,7 +8,9 @@ class Header extends Component {
   render () {
     return (
       <div className="game-header">
-        Generation { this.props.state.generations.current }. Rate is { this.props.state.rate }ms
+        Generation { this.props.generation }.
+        Rate: { this.props.rate }ms.
+        Size: { this.props.size[0] }x{ this.props.size[1] }.
       </div>
     )
   }

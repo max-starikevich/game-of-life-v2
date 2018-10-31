@@ -1,9 +1,10 @@
 const EventEmitter = require('events')
+const WorldHelpers = require('../../../shared/WorldHelpers')
 
 class World extends EventEmitter {
   constructor(config = {
-    size: [10, 10],
-    rate: 250
+    size: [30, 30],
+    rate: 100
   }) {
     super()
     this.size = config.size
@@ -49,33 +50,28 @@ class World extends EventEmitter {
 
       while(1) {
         await this.delay(rate)
-        this.world = await this.getNextGeneration()
+        await this.iterateWorld()
         this.generation++
-        this.printWorld()
+        WorldHelpers.printWorld(this.world, this.generation)
       }
     } catch(e) {
       console.log(`Lifecycle is stopped.`)
     }
   }
 
-  printWorld(world = this.world, generation = this.generation, returnString = false) {
+  async iterateWorld() {
+    let {
+      world: nextWorld,
+      isDead
+    } = await this.getNextGeneration()
 
-    let result = `Generation #${generation} \n`
-
-    for(let i = 0; i < world.length; i++) {
-      if(i !== 0) {
-        result += '\n'
-      }
-      for(let j = 0; j < world[i].length; j++) {
-        result += world[i][j].value ? '# ': '- '
-      }
+    if(isDead) {
+      this.emit('world-died')
+    } else {
+      this.emit('next-generation-built')
     }
 
-    if(returnString) {
-      return result
-    }
-
-    console.log(result)
+    this.world = nextWorld
   }
 
   stopLifeCycle() {
@@ -92,24 +88,31 @@ class World extends EventEmitter {
     }
   }
 
-  getNextGeneration() {
+  getNextGeneration(world = this.world) {
     return new Promise(async (resolve, reject) => {
 
       if(!this.cycleIsActive) {
         reject('Cycle stopped explicitly')
       }
 
-      console.log('Building next generation')
+      let nextWorld = JSON.parse(JSON.stringify(world))
+      let isDead = true
 
-      let world = JSON.parse(JSON.stringify(this.world))
+      for(let i = 0; i < nextWorld.length; i++) {
+        for(let j = 0; j < nextWorld[i].length; j++) {
+          let futureCell = this.getFutureCell(i, j)
+          nextWorld[i][j] = futureCell
 
-      for(let i = 0; i < world.length; i++) {
-        for(let j = 0; j < world[i].length; j++) {
-          world[i][j] = this.getFutureCell(i, j)
+          if(futureCell.value === 1 && isDead === true) {
+            isDead = false
+          }
         }
       }
 
-      resolve(world)
+      resolve({
+        world: nextWorld,
+        isDead
+      })
     })
   }
 
@@ -172,6 +175,15 @@ class World extends EventEmitter {
     })
 
     return neighborsCount;
+  }
+
+  exportWorld() {
+    return {
+      rate: this.rate,
+      size: this.size,
+      world: this.world,
+      generation: this.generation
+    }
   }
 }
 
