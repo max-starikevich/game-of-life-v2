@@ -39,10 +39,6 @@ class Core {
     this.world.on('world-update', () => {
       this.onNewWorldBuilt()
     })
-
-    this.world.on('world-died', () => {
-      this.stopGame()
-    })
   }
 
   startGame () {
