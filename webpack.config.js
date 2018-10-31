@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: {
-    main: './app/web/main.jsx'
+    main: './src/web/main.jsx'
   },
   module: {
     rules: [
@@ -45,14 +45,14 @@ module.exports = {
   },
   resolve: {
     alias: {
-      scenes: path.resolve(__dirname, 'app/web/scenes'),
-      shared: path.resolve(__dirname, 'app/shared')
+      scenes: path.resolve(__dirname, 'src/web/scenes'),
+      shared: path.resolve(__dirname, 'src/shared')
     },
     extensions: ['*', '.js', '.jsx']
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'app/web/templates/layout.hbs',
+      template: './src/web/templates/layout.hbs',
       inject: false
     })
   ]
