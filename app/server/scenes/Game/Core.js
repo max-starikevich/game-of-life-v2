@@ -21,7 +21,9 @@ class Core {
   }
 
   async prepareGame() {
+
     await this.communication.establish()
+
     Object.keys(eventHandlers).map(eventName => {
       this.communication.on(eventName, (data) => {
         this.onClientAction(eventName, data)
@@ -30,8 +32,14 @@ class Core {
 
     await this.world.build()
 
-    this.world.on('next-generation-built', () => {
-      this.onNextGeneration()
+    this.world.randomize()
+
+    this.world.on('new-world-built', () => {
+      this.onNewWorldBuilt()
+    })
+
+    this.world.on('world-died', () => {
+      this.stopGame()
     })
   }
 
@@ -48,15 +56,13 @@ class Core {
 
   randomizeWorld() {
     this.world.randomize()
-    console.log('World randomized')
   }
 
   onClientAction(eventName, data) {
-    let handler = eventHandlers[eventName]
-    handler(this, data)
+    eventHandlers[eventName](this, data)
   }
 
-  onNextGeneration() {
+  onNewWorldBuilt() {
     this.broadcastWorld()
   }
 

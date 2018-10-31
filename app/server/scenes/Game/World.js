@@ -3,7 +3,7 @@ const EventEmitter = require('events')
 class World extends EventEmitter {
   constructor(config = {
     size: [15, 15],
-    rate: 500
+    rate: 100
   }) {
     super()
     this.size = config.size
@@ -63,10 +63,9 @@ class World extends EventEmitter {
 
     console.log(`Generation #${this.generation} is ready`)
 
-    this.emit('next-generation-built')
+    this.emit('new-world-built')
 
     if(!(lifeCount > 0)) {
-      console.log('World died')
       this.emit('world-died')
     }
 
