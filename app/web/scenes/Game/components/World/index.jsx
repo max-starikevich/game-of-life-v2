@@ -8,8 +8,15 @@ class World extends Component {
   }
 
   render() {
+
+    if(!this.props.world) {
+      return null
+    }
+
     let rows = this.props.world.map((row, index) =>
-      <Row cells={row} key={index} />
+      <Row cells={row}
+           key={index}
+      />
     )
 
     return (

@@ -3,6 +3,7 @@ import io from 'socket.io-client'
 
 import { World } from './components/World'
 import { Header } from './components/Header'
+import { Controls } from './components/Controls'
 
 class Game extends Component {
 
@@ -18,25 +19,25 @@ class Game extends Component {
       world: null,
       worldText: null
     }
+
+    this.onStopLifeCycle = this.onStopLifeCycle.bind(this)
+    this.onStartLifeCycle = this.onStartLifeCycle.bind(this)
+    this.onRandomizeWorld = this.onRandomizeWorld.bind(this)
   }
 
   render() {
-
-    let headerContainer = null
-    let gameContainer = null
-
-    if(this.state.world) {
-      headerContainer = <Header generation={this.state.generation}
-                                rate={this.state.rate}
-                                size={this.state.size}/>
-
-      gameContainer = <World world={this.state.world}/>
-    }
-
     return (
       <div className="game">
-        { headerContainer }
-        { gameContainer }
+        <Header generation={this.state.generation}
+                rate={this.state.rate}
+                size={this.state.size} />
+
+        <World world={this.state.world} />
+
+        <Controls stopLifeCycle={this.onStopLifeCycle}
+                  startLifeCycle={this.onStartLifeCycle}
+                  randomizeWorld={this.onRandomizeWorld}
+        />
       </div>
     )
   }
@@ -49,10 +50,6 @@ class Game extends Component {
     })
   }
 
-  sendData(eventName, data) {
-    this.socket.emit(eventName, data)
-  }
-
   onNextGeneration(data) {
 
     let { world, generation, rate, size } = data
@@ -63,10 +60,28 @@ class Game extends Component {
       generation,
       world,
     })
+
+    document.title = `Generation #${generation}`
   }
 
   onWorldChangedClient(affectedCells) {
     this.sendData('world-change-client', affectedCells)
+  }
+
+  onStopLifeCycle() {
+    this.sendData('stop-lifecycle')
+  }
+
+  onStartLifeCycle() {
+    this.sendData('start-lifecycle')
+  }
+
+  onRandomizeWorld() {
+    this.sendData('randomize-world')
+  }
+
+  sendData(eventName, data = null) {
+    this.socket.emit(eventName, data)
   }
 }
 

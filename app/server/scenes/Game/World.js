@@ -2,7 +2,7 @@ const EventEmitter = require('events')
 
 class World extends EventEmitter {
   constructor(config = {
-    size: [30, 30],
+    size: [15, 15],
     rate: 500
   }) {
     super()
@@ -42,9 +42,6 @@ class World extends EventEmitter {
   async startLifeCycle(rate = this.rate) {
 
     try {
-
-      console.log('Starting lifecycle')
-
       this.cycleIsActive = true
 
       while(1) {
@@ -53,7 +50,7 @@ class World extends EventEmitter {
         this.generation++
       }
     } catch(e) {
-      console.log(`Lifecycle is stopped.`)
+
     }
   }
 
@@ -82,7 +79,7 @@ class World extends EventEmitter {
     this.cycleIsActive = false
   }
 
-  randomizeWorld(world = this.world) {
+  randomize(world = this.world) {
     for(let i = 0; i < world.length; i++) {
       for(let j = 0; j < world[i].length; j++) {
         world[i][j] = {
