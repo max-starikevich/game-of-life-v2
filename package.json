@@ -4,8 +4,7 @@
   "description": "One more 'Game of Life' implementation",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "exit 0",
+    "test": "standard",
     "build": "webpack --config ./webpack.config.js --mode production",
     "dev:frontend": "webpack-dev-server --config ./webpack.config.js --mode development",
     "dev:backend": "nodemon --inspect=0.0.0.0:9229 main.js"
@@ -54,6 +53,7 @@
     "style-loader": "^0.23.1",
     "webpack": "^4.23.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10"
+    "webpack-dev-server": "^3.1.10",
+    "standard": "*"
   }
 }
