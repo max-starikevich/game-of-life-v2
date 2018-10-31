@@ -15,6 +15,7 @@ class Row extends Component {
             x={cell.x}
             value={cell.value}
             key={index}
+            handleCellClick={this.props.handleCellClick}
       />
     )
 

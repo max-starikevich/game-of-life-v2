@@ -13,7 +13,7 @@ class World extends Component {
     }
 
     let rows = this.props.world.map((row, index) =>
-      <Row cells={row} key={index} />
+      <Row cells={row} key={index} handleCellClick={this.props.handleCellClick} />
     )
 
     return (

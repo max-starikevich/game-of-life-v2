@@ -14,6 +14,9 @@ const eventHandlers = {
   },
   'world-update-request': (core, data, socket) => {
     core.sendWorldToClient(socket)
+  },
+  'cells-change': (core, data) => {
+    core.registerCellsChange(data)
   }
 }
 
@@ -51,6 +54,7 @@ class Core {
 
   stopGame () {
     this.world.stopLifeCycle()
+    this.broadcastWorld()
   }
 
   randomizeWorld () {
@@ -71,6 +75,10 @@ class Core {
 
   sendWorldToClient (socket) {
     this.communication.sendToClient(socket, 'world-update', this.world.export())
+  }
+
+  registerCellsChange(cells) {
+    this.world.modifyCells(cells)
   }
 }
 

@@ -22,6 +22,7 @@ class Game extends Component {
     this.onStopLifeCycle = this.onStopLifeCycle.bind(this)
     this.onStartLifeCycle = this.onStartLifeCycle.bind(this)
     this.onRandomizeWorld = this.onRandomizeWorld.bind(this)
+    this.onCellClick = this.onCellClick.bind(this)
   }
 
   establishConnection() {
@@ -58,7 +59,8 @@ class Game extends Component {
                 rate={this.state.rate}
                 size={this.state.size} />
 
-        <World world={this.state.world} />
+        <World world={this.state.world}
+               handleCellClick={this.onCellClick} />
 
         <Controls stopLifeCycle={this.onStopLifeCycle}
                   startLifeCycle={this.onStartLifeCycle}
@@ -94,6 +96,24 @@ class Game extends Component {
 
   onRandomizeWorld() {
     this.sendToServer('randomize-world')
+  }
+
+  onCellClick(y, x) {
+
+    if(!y || !x) {
+      return
+    }
+
+    let changedCell = this.state.world[y][x]
+    changedCell.value = changedCell.value === 1 ? 0 : 1
+
+    this.registerCellsChange([
+      changedCell
+    ])
+  }
+
+  registerCellsChange(cells) {
+    this.sendToServer('cells-change', cells)
   }
 }
 

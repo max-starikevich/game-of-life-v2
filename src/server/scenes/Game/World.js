@@ -123,17 +123,24 @@ class World extends EventEmitter {
     })
   }
 
-  modifyWorld (cellsToChange = []) {
-    this.emit('world-change-server', cellsToChange)
-
+  modifyCells (cellsToChange = []) {
     cellsToChange.map(cell => {
       this.modifyCell(cell)
     })
+
+    this.emit('world-update')
   }
 
-  modifyCell (cell) {
+  modifyCell (cell, emitUpdate = false) {
     let { y, x, value } = cell
-    this.world[x][y] = value
+
+    this.world[y][x] = {
+      y, x, value
+    }
+
+    if(emitUpdate) {
+      this.emit('world-update')
+    }
   }
 
   getFutureCell (y, x, world = this.world) {
