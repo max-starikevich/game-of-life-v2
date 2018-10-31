@@ -11,3 +11,17 @@ The modern version was originally published 100 years later, in 1960. It was cre
 It is now part of the permanent collection of the Smithsonian's National Museum of American History and an inductee into the National Toy Hall of Fame.
 
 It's my free implementation of the game to taste some new tech features.
+
+# Instructions
+
+I assume, that you have already installed Docker and Docker Compose.
+
+```bash
+$ git clone git@github.com:max-starikevich/game-of-life-2018.git
+$ cd game-of-life-2018
+$ docker-compose up
+```
+
+And then, open `http://localhost:8080/` in your favourite browser, in few tabs at the same time.
+
+Enjoy!
