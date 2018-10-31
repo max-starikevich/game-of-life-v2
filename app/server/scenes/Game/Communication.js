@@ -1,7 +1,6 @@
 const EventEmitter = require('events')
 
 class Communication extends EventEmitter {
-
   constructor(io, eventList = []) {
     super()
     this.io = io

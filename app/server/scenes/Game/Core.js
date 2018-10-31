@@ -1,31 +1,35 @@
-const Communication = require('./Communication.js')
-const Playground = require('./Playground')
+const Communication = require('./Communication')
+const World = require('./World')
 
 const triggerClientEventsList = [
   'world-change-client'
 ]
 
 class Core {
-
   constructor(io) {
     this.communication = new Communication(io, triggerClientEventsList)
-    this.playground = new Playground()
+    this.world = new World()
   }
 
-  async startServer() {
+  async prepareGame() {
     await this.communication.establish()
     this.communication.on('world-change-client', (...data) => {
       this.onWorldChangeClient(...data)
     })
 
-    await this.playground.build()
-    this.playground.on('world-change-server', (...data) => {
+    await this.world.build()
+    this.world.on('world-change-server', (...data) => {
       this.onWorldChangeServer(...data)
     })
   }
 
+  startGame() {
+    this.world.randomizeWorld()
+    this.world.startLifeCycle().then(() => {})
+  }
+
   onWorldChangeClient(affectedCells) {
-    this.playground.applyChanges(affectedCells)
+    this.world.modifyWorld(affectedCells)
     console.log(`onWorldChangeClient:`, affectedCells)
   }
 

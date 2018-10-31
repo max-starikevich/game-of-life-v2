@@ -9,8 +9,9 @@ const Core = require('./scenes/Game/Core')
 
 const game = new Core(io)
 
-game.startServer().then(() => {
+game.prepareGame().then(() => {
   console.log('Game of Life is online')
+  game.startGame()
 })
 
 server.listen(3000, '0.0.0.0')
