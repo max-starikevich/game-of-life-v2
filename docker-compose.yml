@@ -18,8 +18,8 @@ services:
     volumes:
     - ./:/home/node/app
     - ./logs/npm:/home/node/.npm/_logs
-    links:
-      - nginx
+#    links:
+#      - nginx
     networks:
     - local
     ports:
