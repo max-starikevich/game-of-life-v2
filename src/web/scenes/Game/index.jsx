@@ -5,8 +5,6 @@ import { World } from './components/World'
 import { Header } from './components/Header'
 import { Controls } from './components/Controls'
 
-const WORLD_REQUEST_TIMEOUT = 500
-
 class Game extends Component {
 
   constructor() {
@@ -33,11 +31,7 @@ class Game extends Component {
       this.onWorldUpdate(data)
     })
 
-    setTimeout(() => {
-      if(this.state.world === null) {
-        this.requestWorldUpdate()
-      }
-    }, WORLD_REQUEST_TIMEOUT)
+    this.requestWorldUpdate()
   }
 
   requestWorldUpdate() {
@@ -49,6 +43,15 @@ class Game extends Component {
   }
 
   render() {
+
+    if(!this.state.world) {
+      return (
+        <div className="world-not-ready">
+          Loading...
+        </div>
+      )
+    }
+
     return (
       <div className="game">
         <Header generation={this.state.generation}
