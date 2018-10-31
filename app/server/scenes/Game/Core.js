@@ -61,7 +61,7 @@ class Core {
   }
 
   broadcastWorld() {
-    this.communication.broadcast('next-generation-built', this.world.exportWorld())
+    this.communication.broadcast('new-world-built', this.world.exportWorld())
   }
 }
 

@@ -6,12 +6,7 @@ class Header extends Component {
   }
 
   render () {
-
-    if(
-      !this.props.generation ||
-      !this.props.rate ||
-      !this.props.size
-    ) {
+    if(!this.props.generation || !this.props.rate || !this.props.size) {
       return null
     }
 

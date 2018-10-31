@@ -25,6 +25,14 @@ class Game extends Component {
     this.onRandomizeWorld = this.onRandomizeWorld.bind(this)
   }
 
+  establishConnection() {
+    this.socket = io('http://localhost:3000')
+
+    this.socket.on('new-world-built', (data) => {
+      this.onNewWorldBuilt(data)
+    })
+  }
+
   render() {
     return (
       <div className="game">
@@ -42,15 +50,7 @@ class Game extends Component {
     )
   }
 
-  establishConnection() {
-    this.socket = io('http://localhost:3000')
-
-    this.socket.on('next-generation-built', (data) => {
-      this.onNextGeneration(data)
-    })
-  }
-
-  onNextGeneration(data) {
+  onNewWorldBuilt(data) {
 
     let { world, generation, rate, size } = data
 
@@ -62,10 +62,6 @@ class Game extends Component {
     })
 
     document.title = `Generation #${generation}`
-  }
-
-  onWorldChangedClient(affectedCells) {
-    this.sendData('world-change-client', affectedCells)
   }
 
   onStopLifeCycle() {
