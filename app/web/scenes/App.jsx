@@ -6,12 +6,12 @@ import { Footer } from 'scenes/Layout/Footer'
 import { Game } from 'scenes/Game'
 
 class App extends Component {
-  render() {
+  render () {
     return (
       <Router>
         <div className="app-container">
           <Header/>
-          <Route exact path="/" component={Game} />
+          <Route exact path="/" component={Game}/>
           <Footer/>
         </div>
       </Router>

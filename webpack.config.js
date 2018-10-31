@@ -3,7 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin')
 
 module.exports = {
   entry: {
-    main: './app/web/main.jsx',
+    main: './app/web/main.jsx'
   },
   module: {
     rules: [
@@ -27,10 +27,10 @@ module.exports = {
     ]
   },
   output: {
-    path: __dirname + '/dist',
+    path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
     filename: 'bundle-[name].[hash].js',
-    chunkFilename: 'chunk-[name].[hash].js',
+    chunkFilename: 'chunk-[name].[hash].js'
   },
   devServer: {
     contentBase: './dist',
@@ -39,14 +39,14 @@ module.exports = {
     historyApiFallback: true,
     proxy: {
       '/socket/': {
-        target: 'http://backend:3000/socket/',
+        target: 'http://backend:3000/socket/'
       }
     }
   },
   resolve: {
     alias: {
       scenes: path.resolve(__dirname, 'app/web/scenes'),
-      shared: path.resolve(__dirname, 'app/shared'),
+      shared: path.resolve(__dirname, 'app/shared')
     },
     extensions: ['*', '.js', '.jsx']
   },

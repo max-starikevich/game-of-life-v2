@@ -18,13 +18,12 @@ const eventHandlers = {
 }
 
 class Core {
-  constructor(io) {
+  constructor (io) {
     this.communication = new Communication(io, Object.keys(eventHandlers))
     this.world = new World()
   }
 
-  async prepareGame() {
-
+  async prepareGame () {
     await this.communication.establish()
 
     Object.keys(eventHandlers).map(eventName => {
@@ -46,7 +45,7 @@ class Core {
     })
   }
 
-  startGame() {
+  startGame () {
     console.log('Starting lifecycle')
 
     this.world.startLifeCycle().then(() => {
@@ -54,27 +53,27 @@ class Core {
     })
   }
 
-  stopGame() {
+  stopGame () {
     this.world.stopLifeCycle()
   }
 
-  randomizeWorld() {
+  randomizeWorld () {
     this.world.randomize()
   }
 
-  onClientAction(eventName, data, socket) {
+  onClientAction (eventName, data, socket) {
     eventHandlers[eventName](this, data, socket)
   }
 
-  onNewWorldBuilt() {
+  onNewWorldBuilt () {
     this.broadcastWorld()
   }
 
-  broadcastWorld() {
+  broadcastWorld () {
     this.communication.broadcast('world-update', this.world.export())
   }
 
-  sendWorldToClient(socket) {
+  sendWorldToClient (socket) {
     this.communication.sendToClient(socket, 'world-update', this.world.export())
   }
 }

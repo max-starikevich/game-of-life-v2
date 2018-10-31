@@ -25,6 +25,11 @@
       "@babel/preset-react"
     ]
   },
+  "standard": {
+    "ignore": [
+      "**/*.jsx"
+    ]
+  },
   "dependencies": {
     "bootstrap": "^4.1.3",
     "koa": "^2.6.1",

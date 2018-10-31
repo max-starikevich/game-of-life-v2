@@ -1,7 +1,7 @@
 const EventEmitter = require('events')
 
 class World extends EventEmitter {
-  constructor(config = {
+  constructor (config = {
     size: [15, 15],
     rate: 100
   }) {
@@ -13,17 +13,16 @@ class World extends EventEmitter {
     this.generation = 1
   }
 
-  build(size = this.size, initialValue = 0) {
-
+  build (size = this.size, initialValue = 0) {
     let yMax = size[0]
     let xMax = size[1]
 
     const world = []
 
-    for(let i = 0; i < yMax; i++) {
+    for (let i = 0; i < yMax; i++) {
       let row = []
 
-      for(let j = 0; j < xMax; j++) {
+      for (let j = 0; j < xMax; j++) {
         let cell = {
           y: i,
           x: j,
@@ -39,23 +38,21 @@ class World extends EventEmitter {
     this.world = world
   }
 
-  async startLifeCycle(rate = this.rate) {
-
+  async startLifeCycle (rate = this.rate) {
     try {
       this.cycleIsActive = true
 
-      while(1) {
+      while (1) {
         await this.delay(rate)
         await this.iterateWorld()
         this.generation++
       }
-    } catch(e) {
+    } catch (e) {
 
     }
   }
 
-  async iterateWorld() {
-
+  async iterateWorld () {
     let {
       world,
       lifeCount
@@ -65,7 +62,7 @@ class World extends EventEmitter {
 
     this.emit('world-update')
 
-    if(!(lifeCount > 0)) {
+    if (!(lifeCount > 0)) {
       this.emit('world-died')
     }
 
@@ -74,13 +71,13 @@ class World extends EventEmitter {
     return world
   }
 
-  stopLifeCycle() {
+  stopLifeCycle () {
     this.cycleIsActive = false
   }
 
-  randomize(world = this.world) {
-    for(let i = 0; i < world.length; i++) {
-      for(let j = 0; j < world[i].length; j++) {
+  randomize (world = this.world) {
+    for (let i = 0; i < world.length; i++) {
+      for (let j = 0; j < world[i].length; j++) {
         world[i][j] = {
           y: i, x: j, value: Math.round(Math.random())
         }
@@ -88,22 +85,21 @@ class World extends EventEmitter {
     }
   }
 
-  getNextGeneration(world = this.world) {
+  getNextGeneration (world = this.world) {
     return new Promise(async (resolve, reject) => {
-
-      if(!this.cycleIsActive) {
-        reject('Cycle stopped explicitly')
+      if (!this.cycleIsActive) {
+        reject(Error('Cycle stopped explicitly'))
       }
 
       let nextWorld = JSON.parse(JSON.stringify(world))
       let lifeCount = 0
 
-      for(let i = 0; i < nextWorld.length; i++) {
-        for(let j = 0; j < nextWorld[i].length; j++) {
+      for (let i = 0; i < nextWorld.length; i++) {
+        for (let j = 0; j < nextWorld[i].length; j++) {
           let futureCell = this.getFutureCell(i, j)
           nextWorld[i][j] = futureCell
 
-          if(futureCell.value === 1) {
+          if (futureCell.value === 1) {
             lifeCount++
           }
         }
@@ -116,7 +112,7 @@ class World extends EventEmitter {
     })
   }
 
-  delay(delay) {
+  delay (delay) {
     return new Promise(resolve => {
       setTimeout(() => {
         resolve()
@@ -124,7 +120,7 @@ class World extends EventEmitter {
     })
   }
 
-  modifyWorld(cellsToChange = []) {
+  modifyWorld (cellsToChange = []) {
     this.emit('world-change-server', cellsToChange)
 
     cellsToChange.map(cell => {
@@ -132,17 +128,17 @@ class World extends EventEmitter {
     })
   }
 
-  modifyCell(cell) {
+  modifyCell (cell) {
     let { y, x, value } = cell
     this.world[x][y] = value
   }
 
-  getFutureCell(y, x, world = this.world) {
+  getFutureCell (y, x, world = this.world) {
     let count = this.getNeighborCount(y, x, world)
 
     let value = 0
 
-    if(count === 3 || (count === 2 && world[y][x].value === 1)) {
+    if (count === 3 || (count === 2 && world[y][x].value === 1)) {
       value = 1
     }
 
@@ -151,16 +147,16 @@ class World extends EventEmitter {
     }
   }
 
-  getNeighborCount(y, x, world = this.world) {
-    let up = y-1
-    let down = y+1
-    let left = x-1
-    let right = x+1
+  getNeighborCount (y, x, world = this.world) {
+    let up = y - 1
+    let down = y + 1
+    let left = x - 1
+    let right = x + 1
 
-    if(x === 0) left = world[0].length-1
-    if(x === world[0].length-1) right = 0
-    if(y === 0) up = world.length-1
-    if(y === world.length-1) down = 0
+    if (x === 0) left = world[0].length - 1
+    if (x === world[0].length - 1) right = 0
+    if (y === 0) up = world.length - 1
+    if (y === world.length - 1) down = 0
 
     let neighbors = [world[up][x], world[up][right],
       world[y][right], world[down][right], world[down][x],
@@ -169,15 +165,15 @@ class World extends EventEmitter {
     let neighborsCount = 0
 
     neighbors.map(neighbor => {
-      if(neighbor.value === 1) {
+      if (neighbor.value === 1) {
         neighborsCount++
       }
     })
 
-    return neighborsCount;
+    return neighborsCount
   }
 
-  export() {
+  export () {
     return {
       rate: this.rate,
       size: this.size,
