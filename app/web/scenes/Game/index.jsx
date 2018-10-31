@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import io from 'socket.io-client'
 
-import { World } from 'scenes/Game/components/World'
-import { Header } from 'scenes/Game/components/Header'
-
-const WorldHelper = require('shared/WorldHelpers')
+import { World } from './components/World'
+import { Header } from './components/Header'
 
 class Game extends Component {
 
@@ -32,8 +30,7 @@ class Game extends Component {
                                 rate={this.state.rate}
                                 size={this.state.size}/>
 
-      gameContainer = <World world={this.state.world}
-                             worldText={this.state.worldText}/>
+      gameContainer = <World world={this.state.world}/>
     }
 
     return (
@@ -60,14 +57,11 @@ class Game extends Component {
 
     let { world, generation, rate, size } = data
 
-    let worldText = WorldHelper.printWorld(world, generation, true)
-
     this.setState({
       size,
       rate,
       generation,
       world,
-      worldText,
     })
   }
 

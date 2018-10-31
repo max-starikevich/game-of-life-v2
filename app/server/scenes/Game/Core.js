@@ -32,7 +32,6 @@ class Core {
 
   onWorldChangeClient(affectedCells) {
     this.world.modifyWorld(affectedCells)
-    console.log(`onWorldChangeClient:`, affectedCells)
   }
 
   onNextGeneration() {

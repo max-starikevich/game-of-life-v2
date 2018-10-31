@@ -1,10 +1,9 @@
 const EventEmitter = require('events')
-const WorldHelpers = require('../../../shared/WorldHelpers')
 
 class World extends EventEmitter {
   constructor(config = {
     size: [30, 30],
-    rate: 100
+    rate: 500
   }) {
     super()
     this.size = config.size
@@ -52,7 +51,6 @@ class World extends EventEmitter {
         await this.delay(rate)
         await this.iterateWorld()
         this.generation++
-        WorldHelpers.printWorld(this.world, this.generation)
       }
     } catch(e) {
       console.log(`Lifecycle is stopped.`)
@@ -60,18 +58,24 @@ class World extends EventEmitter {
   }
 
   async iterateWorld() {
+
     let {
-      world: nextWorld,
-      isDead
+      world,
+      lifeCount
     } = await this.getNextGeneration()
 
-    if(isDead) {
+    console.log(`Generation #${this.generation} is ready`)
+
+    this.emit('next-generation-built')
+
+    if(!(lifeCount > 0)) {
+      console.log('World died')
       this.emit('world-died')
-    } else {
-      this.emit('next-generation-built')
     }
 
-    this.world = nextWorld
+    this.world = world
+
+    return world
   }
 
   stopLifeCycle() {
@@ -96,22 +100,22 @@ class World extends EventEmitter {
       }
 
       let nextWorld = JSON.parse(JSON.stringify(world))
-      let isDead = true
+      let lifeCount = 0
 
       for(let i = 0; i < nextWorld.length; i++) {
         for(let j = 0; j < nextWorld[i].length; j++) {
           let futureCell = this.getFutureCell(i, j)
           nextWorld[i][j] = futureCell
 
-          if(futureCell.value === 1 && isDead === true) {
-            isDead = false
+          if(futureCell.value === 1) {
+            lifeCount++
           }
         }
       }
 
       resolve({
         world: nextWorld,
-        isDead
+        lifeCount
       })
     })
   }

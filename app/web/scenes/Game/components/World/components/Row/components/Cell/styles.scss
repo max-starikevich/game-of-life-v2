@@ -1,0 +1,16 @@
+.cell {
+  width: 20px;
+  height: 20px;
+
+  display: table-cell;
+
+  border: 1px solid grey;
+
+  &.dead {
+    background-color: white;
+  }
+
+  &.alive {
+    background-color: black;
+  }
+}
