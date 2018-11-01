@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "standard",
-    "build": "webpack --config ./configs/webpack.config.js --mode production",
-    "dev:frontend": "webpack-dev-server --config ./configs/webpack.config.js --mode development",
-    "dev:backend": "nodemon --inspect=0.0.0.0:9229 index.js"
+    "webpack:production": "webpack --config ./configs/webpack.config.js --mode production",
+    "webpack:development": "webpack-dev-server --config ./configs/webpack.config.js --mode development",
+    "start:production": "node index.js",
+    "start:development": "nodemon --inspect=0.0.0.0:9229 index.js"
   },
   "repository": {
     "type": "git",
