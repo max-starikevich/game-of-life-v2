@@ -23,6 +23,19 @@ $ cp .env.example .env
 $ docker-compose up
 ```
 
-And then, open `http://localhost:8080/` in your favourite browser, in few tabs at the same time.
+And then, open `http://localhost/` in your favourite browser, in few tabs at the same time.
+
+It's production mode by default. 
+
+If you want to make your hands dirty, open `.env` file and change `MODE` to `development`.
+
+And then again:
+
+```bash
+$ docker-compose up
+```
+
+`webpack-dev-server` will be available on port 8080. Just open `http://localhost:8080/` in the browser.
+
 
 Enjoy!
