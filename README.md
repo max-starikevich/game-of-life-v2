@@ -19,6 +19,7 @@ I assume, that you have already installed Docker and Docker Compose.
 ```bash
 $ git clone git@github.com:max-starikevich/game-of-life-2018.git
 $ cd game-of-life-2018
+$ cp .env.example .env
 $ docker-compose up
 ```
 
