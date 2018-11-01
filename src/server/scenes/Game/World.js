@@ -81,9 +81,15 @@ class World extends EventEmitter {
   randomize (world = this.world) {
     for (let i = 0; i < world.length; i++) {
       for (let j = 0; j < world[i].length; j++) {
-        world[i][j] = {
-          y: i, x: j, value: Math.round(Math.random())
-        }
+        world[i][j].value = Math.round(Math.random())
+      }
+    }
+  }
+
+  clear (world = this.world) {
+    for (let i = 0; i < world.length; i++) {
+      for (let j = 0; j < world[i].length; j++) {
+        world[i][j].value = 0
       }
     }
   }

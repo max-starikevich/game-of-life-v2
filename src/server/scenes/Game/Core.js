@@ -12,6 +12,10 @@ const clientEvents = {
     core.randomizeWorld()
     core.sendWorldToAllClients()
   },
+  'clear-world': (core) => {
+    core.clearWorld()
+    core.sendWorldToAllClients()
+  },
   'world-update-request': (core, data, socket) => {
     core.sendWorldToClient(socket)
   },
@@ -59,6 +63,10 @@ class Core {
 
   randomizeWorld () {
     this.world.randomize()
+  }
+
+  clearWorld() {
+    this.world.clear()
   }
 
   onWorldUpdate () {

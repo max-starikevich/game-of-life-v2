@@ -19,6 +19,10 @@ class Controls extends Component {
         <button onClick={this.props.randomizeWorld}>
           Randomize
         </button>
+
+        <button onClick={this.props.clearWorld}>
+          Clear
+        </button>
       </div>
     )
   }

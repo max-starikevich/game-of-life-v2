@@ -22,6 +22,7 @@ class Game extends Component {
     this.onStopLifeCycle = this.onStopLifeCycle.bind(this)
     this.onStartLifeCycle = this.onStartLifeCycle.bind(this)
     this.onRandomizeWorld = this.onRandomizeWorld.bind(this)
+    this.onClearWorld = this.onClearWorld.bind(this)
 
     this.cellChange = this.cellChange.bind(this)
     this.handleMouseMove = this.handleMouseMove.bind(this)
@@ -56,7 +57,9 @@ class Game extends Component {
 
         <Controls stopLifeCycle={this.onStopLifeCycle}
                   startLifeCycle={this.onStartLifeCycle}
-                  randomizeWorld={this.onRandomizeWorld}/>
+                  randomizeWorld={this.onRandomizeWorld}
+                  clearWorld={this.onClearWorld}
+        />
       </div>
     )
   }
@@ -111,6 +114,10 @@ class Game extends Component {
 
   onRandomizeWorld () {
     this.sendToServer('randomize-world')
+  }
+
+  onClearWorld () {
+    this.sendToServer('clear-world')
   }
 
   cellChange (e, value = null) {
