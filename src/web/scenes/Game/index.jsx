@@ -23,25 +23,7 @@ class Game extends Component {
     this.onStopLifeCycle = this.onStopLifeCycle.bind(this)
     this.onStartLifeCycle = this.onStartLifeCycle.bind(this)
     this.onRandomizeWorld = this.onRandomizeWorld.bind(this)
-    this.onCellClick = this.onCellClick.bind(this)
-  }
-
-  establishConnection() {
-    this.socket = io('http://localhost:3000')
-
-    this.socket.on('world-update', (data) => {
-      this.onWorldUpdate(data)
-    })
-
-    this.requestWorldUpdate()
-  }
-
-  requestWorldUpdate() {
-    this.sendToServer('world-update-request')
-  }
-
-  sendToServer(eventName, data = null) {
-    this.socket.emit(eventName, data)
+    this.handleClick = this.handleClick.bind(this)
   }
 
   render() {
@@ -61,14 +43,37 @@ class Game extends Component {
                 size={this.state.size}
                 clientsCount={this.state.clientsCount} />
 
-        <World world={this.state.world}
-               handleCellClick={this.onCellClick} />
+        <div className="world-container" onClick={this.handleClick}>
+          <World world={this.state.world} />
+        </div>
 
         <Controls stopLifeCycle={this.onStopLifeCycle}
                   startLifeCycle={this.onStartLifeCycle}
                   randomizeWorld={this.onRandomizeWorld} />
       </div>
     )
+  }
+
+  establishConnection() {
+    this.socket = io('http://localhost:3000')
+
+    this.socket.on('world-update', (data) => {
+      this.onWorldUpdate(data)
+    })
+
+    this.requestWorldUpdate()
+  }
+
+  requestWorldUpdate() {
+    this.sendToServer('world-update-request')
+  }
+
+  registerCellsChange(cells) {
+    this.sendToServer('cells-change', cells)
+  }
+
+  sendToServer(eventName, data = null) {
+    this.socket.emit(eventName, data)
   }
 
   onWorldUpdate(data) {
@@ -101,9 +106,13 @@ class Game extends Component {
     this.sendToServer('randomize-world')
   }
 
-  onCellClick(y, x) {
+  handleClick(e) {
 
-    if(!y || !x) {
+    let data = e.target.dataset
+
+    let { x, y } = data
+
+    if(!x || !y) {
       return
     }
 
@@ -113,10 +122,6 @@ class Game extends Component {
     this.registerCellsChange([
       changedCell
     ])
-  }
-
-  registerCellsChange(cells) {
-    this.sendToServer('cells-change', cells)
   }
 }
 

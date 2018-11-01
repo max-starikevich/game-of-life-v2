@@ -3,7 +3,6 @@ import { Cell } from './components/Cell'
 import './styles.scss'
 
 class Row extends Component {
-
   constructor(props) {
     super(props)
   }
@@ -15,7 +14,6 @@ class Row extends Component {
             x={cell.x}
             value={cell.value}
             key={index}
-            handleCellClick={this.props.handleCellClick}
       />
     )
 
