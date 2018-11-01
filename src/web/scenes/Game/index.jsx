@@ -121,7 +121,6 @@ class Game extends Component {
   }
 
   cellChange (e, value = null) {
-
     let {x, y} = this.getCellData(e.target)
 
     if (!x || !y) {
@@ -154,7 +153,6 @@ class Game extends Component {
   }
 
   handleMouseMove (e) {
-
     if (!this.mouseDown) {
       return
     }
@@ -166,7 +164,6 @@ class Game extends Component {
     e.preventDefault()
 
     let cell = this.getCellData(e.target)
-    console.log(cell)
     this.paintingValue = cell.value === 1 ? 0 : 1
 
     this.mouseDown = true
