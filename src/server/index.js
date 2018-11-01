@@ -5,7 +5,7 @@ const app = new Koa()
 const server = require('http').createServer(app.callback())
 const io = require('socket.io')(server)
 
-const Core = require('./scenes/Game/Core')
+const Core = require('./Game/Core')
 
 const game = new Core(io)
 

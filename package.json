@@ -1,13 +1,13 @@
 {
   "name": "game-of-life-2018",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "One more 'Game of Life' implementation",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
     "test": "standard",
-    "build": "webpack --config ./webpack.config.js --mode production",
-    "dev:frontend": "webpack-dev-server --config ./webpack.config.js --mode development",
-    "dev:backend": "nodemon --inspect=0.0.0.0:9229 main.js"
+    "build": "webpack --config ./configs/webpack.config.js --mode production",
+    "dev:frontend": "webpack-dev-server --config ./configs/webpack.config.js --mode development",
+    "dev:backend": "nodemon --inspect=0.0.0.0:9229 index.js"
   },
   "repository": {
     "type": "git",

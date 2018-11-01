@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
-import { Header } from 'scenes/Layout/Header'
-import { Footer } from 'scenes/Layout/Footer'
-import { Game } from 'scenes/Game'
+import { Header } from './Layout/Header'
+import { Footer } from './Layout/Footer'
+import { Game } from './Game'
 
 class App extends Component {
   render () {

@@ -1,9 +1,10 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const contextPath = __dirname + '/../'
 
 module.exports = {
   entry: {
-    main: './src/web/main.jsx'
+    main: path.resolve(contextPath, 'src/client/main.jsx')
   },
   module: {
     rules: [
@@ -27,13 +28,13 @@ module.exports = {
     ]
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(contextPath, 'dist'),
     publicPath: '/',
     filename: 'bundle-[name].[hash].js',
     chunkFilename: 'chunk-[name].[hash].js'
   },
   devServer: {
-    contentBase: './dist',
+    contentBase: path.resolve(contextPath, 'dist'),
     host: '0.0.0.0',
     port: '8080',
     historyApiFallback: true,
@@ -45,14 +46,13 @@ module.exports = {
   },
   resolve: {
     alias: {
-      scenes: path.resolve(__dirname, 'src/web/scenes'),
-      shared: path.resolve(__dirname, 'src/shared')
+      components: path.resolve(contextPath, 'src/client/components')
     },
     extensions: ['*', '.js', '.jsx']
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './src/web/templates/layout.hbs',
+      template: path.resolve(contextPath, 'src/client/templates/layout.hbs'),
       inject: false
     })
   ]
