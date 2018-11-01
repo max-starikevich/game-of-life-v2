@@ -1,7 +1,7 @@
-const Communication = require('./Communication')
+const Network = require('./Network')
 const World = require('./World')
 
-const eventHandlers = {
+const clientEvents = {
   'stop-lifecycle': (core) => {
     core.stopGame()
   },
@@ -10,7 +10,7 @@ const eventHandlers = {
   },
   'randomize-world': (core) => {
     core.randomizeWorld()
-    core.broadcastWorld()
+    core.sendWorldToAllClients()
   },
   'world-update-request': (core, data, socket) => {
     core.sendWorldToClient(socket)
@@ -22,16 +22,16 @@ const eventHandlers = {
 
 class Core {
   constructor (io) {
-    this.communication = new Communication(io, Object.keys(eventHandlers))
+    this.network = new Network(io, Object.keys(clientEvents))
     this.world = new World()
   }
 
   async prepareGame () {
-    await this.communication.establish()
+    await this.network.establish()
 
-    Object.keys(eventHandlers).map(eventName => {
-      this.communication.on(eventName, (data, socket) => {
-        this.onClientAction(eventName, data, socket)
+    Object.keys(clientEvents).map(eventName => {
+      this.network.on(eventName, (data, socket) => {
+        clientEvents[eventName](this, data, socket)
       })
     })
 
@@ -40,7 +40,7 @@ class Core {
     this.world.randomize()
 
     this.world.on('world-update', () => {
-      this.onNewWorldBuilt()
+      this.onWorldUpdate()
     })
   }
 
@@ -54,37 +54,32 @@ class Core {
 
   stopGame () {
     this.world.stopLifeCycle()
-    this.broadcastWorld()
+    this.sendWorldToAllClients()
   }
 
   randomizeWorld () {
     this.world.randomize()
   }
 
-  onClientAction (eventName, data, socket) {
-    eventHandlers[eventName](this, data, socket)
+  onWorldUpdate () {
+    this.sendWorldToAllClients()
   }
 
-  onNewWorldBuilt () {
-    this.broadcastWorld()
-  }
-
-  broadcastWorld () {
-    this.communication.broadcast('world-update', this.export())
+  sendWorldToAllClients () {
+    this.network.sendToAllClients('world-update', this.exportGameData())
   }
 
   sendWorldToClient (socket) {
-    this.communication.sendToClient(socket, 'world-update', this.export())
+    this.network.sendToClient(socket, 'world-update', this.exportGameData())
   }
 
   registerCellsChange(cells) {
     this.world.modifyCells(cells)
   }
 
-  export() {
-
+  exportGameData() {
     let exportedWorld = this.world.export()
-    let clientsCount = this.communication.clients.size
+    let clientsCount = this.network.clients.size
 
     return {
       ...exportedWorld,

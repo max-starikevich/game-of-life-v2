@@ -1,11 +1,11 @@
 const EventEmitter = require('events')
 
-class Communication extends EventEmitter {
-  constructor (io, eventList = []) {
+class Network extends EventEmitter {
+  constructor (io, clientEvents = []) {
     super()
     this.io = io
     this.clients = new Map()
-    this.eventList = eventList
+    this.clientEvents = clientEvents
   }
 
   async establish () {
@@ -26,31 +26,21 @@ class Communication extends EventEmitter {
 
     socket.on('disconnect', () => {
       this.onDisconnectedClient(clientId)
-      console.log(`Client ${clientId} disconnected`)
     })
 
-    for (let eventName of this.eventList) {
+    for (let eventName of this.clientEvents) {
       socket.on(eventName, (data) => {
-        this.onClientMessage(eventName, data, socket)
+        this.emit(eventName, data, socket)
       })
     }
   }
 
-  onClientMessage (eventName, data, socket) {
-    this.emit(eventName, data, socket)
-  }
-
   onDisconnectedClient (clientId) {
-    let client = this.clients.get(clientId)
-
-    if (client && client.socket) {
-      client.socket.disconnect(true)
-    }
-
+    console.log(`Client ${clientId} disconnected`)
     this.clients.delete(clientId)
   }
 
-  broadcast (eventName, data) {
+  sendToAllClients (eventName, data) {
     this.io.sockets.emit(eventName, data)
   }
 
@@ -59,4 +49,4 @@ class Communication extends EventEmitter {
   }
 }
 
-module.exports = Communication
+module.exports = Network
