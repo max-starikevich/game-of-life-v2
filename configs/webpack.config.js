@@ -40,7 +40,8 @@ module.exports = {
     historyApiFallback: true,
     proxy: {
       '/socket.io/': {
-        target: 'http://backend:3000/socket.io/'
+        target: 'http://backend:3000/socket.io/',
+        ws: true
       }
     }
   },
