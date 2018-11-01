@@ -12,6 +12,8 @@ services:
     ports:
     - '3000:3000'
     - '9229:9229'
+    environment:
+      - NODE_ENV=${MODE}
   frontend:
     build: ./docker/node
     command: npm run webpack:${MODE}
@@ -24,6 +26,8 @@ services:
     - local
     ports:
     - '8080:8080'
+    environment:
+      - NODE_ENV=${MODE}
   nginx:
     build: ./docker/nginx
     volumes:
