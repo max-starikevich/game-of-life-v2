@@ -39,8 +39,8 @@ module.exports = {
     port: '8080',
     historyApiFallback: true,
     proxy: {
-      '/socket/': {
-        target: 'http://backend:3000/socket/'
+      '/socket.io/': {
+        target: 'http://backend:3000/socket.io/'
       }
     }
   },
@@ -52,8 +52,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(contextPath, 'src/client/templates/layout.hbs'),
-      inject: false
+      template: path.resolve(contextPath, 'src/client/index.html')
     })
   ]
 }

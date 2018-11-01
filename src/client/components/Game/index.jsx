@@ -65,7 +65,7 @@ class Game extends Component {
   }
 
   establishConnection () {
-    this.socket = io('http://localhost:3000')
+    this.socket = io()
 
     this.socket.on('world-update', (data) => {
       this.onWorldUpdate(data)

@@ -18,23 +18,23 @@ services:
     volumes:
     - ./:/home/node/app
     - ./logs/npm:/home/node/.npm/_logs
-#    links:
-#      - nginx
+    links:
+      - nginx
     networks:
     - local
     ports:
     - '8080:8080'
-#  nginx:
-#    build: ./docker/nginx
-#    volumes:
-#    - ./dist:/var/www
-#    - ./logs/nginx:/var/log/nginx
-#    links:
-#      - backend
-#    ports:
-#    - '80:80'
-#    networks:
-#    - local
+  nginx:
+    build: ./docker/nginx
+    volumes:
+    - ./dist:/var/www
+    - ./logs/nginx:/var/log/nginx
+    links:
+      - backend
+    ports:
+    - '80:80'
+    networks:
+    - local
 networks:
   local:
     driver: bridge
