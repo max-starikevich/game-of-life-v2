@@ -120,25 +120,31 @@ class Game extends Component {
     this.sendToServer('clear-world')
   }
 
-  cellChange (e, value = null) {
-    let {x, y} = this.getCellData(e.target)
+  cellChange (e, explicitValue = null) {
+    try {
+      let { x, y, value } = this.getCellData(e.target)
 
-    if (!x || !y) {
-      return
+      if (!x || !y) {
+        return
+      }
+
+      let changedCell = {
+        x, y
+      }
+
+      if (explicitValue !== null) {
+        changedCell.value = explicitValue
+      }
+      else {
+        changedCell.value = value === 1 ? 0 : 1
+      }
+
+      this.registerCellsChange([
+        changedCell
+      ])
+    } catch(e) {
+
     }
-
-    let changedCell = this.state.world[y][x]
-
-    if (value !== null) {
-      changedCell.value = value
-    }
-    else {
-      changedCell.value = changedCell.value === 1 ? 0 : 1
-    }
-
-    this.registerCellsChange([
-      changedCell
-    ])
   }
 
   getCellData ($node) {
@@ -161,13 +167,17 @@ class Game extends Component {
   }
 
   handleMouseDown (e) {
-    e.preventDefault()
+    try {
+      e.preventDefault()
 
-    let cell = this.getCellData(e.target)
-    this.paintingValue = cell.value === 1 ? 0 : 1
+      let cell = this.getCellData(e.target)
+      this.paintingValue = cell.value === 1 ? 0 : 1
 
-    this.mouseDown = true
-    this.cellChange(e, this.paintingValue)
+      this.mouseDown = true
+      this.cellChange(e, this.paintingValue)
+    } catch(e) {
+
+    }
   }
 
   handleMouseUp () {
