@@ -9,10 +9,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.hbs$/,
-        loader: 'handlebars-loader'
-      },
-      {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: ['babel-loader']
