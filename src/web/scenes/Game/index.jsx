@@ -6,8 +6,7 @@ import { Header } from './components/Header'
 import { Controls } from './components/Controls'
 
 class Game extends Component {
-
-  constructor() {
+  constructor () {
     super()
 
     this.establishConnection()
@@ -23,12 +22,16 @@ class Game extends Component {
     this.onStopLifeCycle = this.onStopLifeCycle.bind(this)
     this.onStartLifeCycle = this.onStartLifeCycle.bind(this)
     this.onRandomizeWorld = this.onRandomizeWorld.bind(this)
-    this.handleClick = this.handleClick.bind(this)
+
+    this.cellChange = this.cellChange.bind(this)
+    this.handleMouseMove = this.handleMouseMove.bind(this)
+    this.handleMouseUp = this.handleMouseUp.bind(this)
+    this.handleMouseDown = this.handleMouseDown.bind(this)
   }
 
-  render() {
+  render () {
 
-    if(!this.state.world) {
+    if (!this.state.world) {
       return (
         <div className="world-not-ready">
           Loading...
@@ -41,20 +44,24 @@ class Game extends Component {
         <Header generation={this.state.generation}
                 rate={this.state.rate}
                 size={this.state.size}
-                clientsCount={this.state.clientsCount} />
+                clientsCount={this.state.clientsCount}/>
 
-        <div className="world-container" onClick={this.handleClick}>
-          <World world={this.state.world} />
+        <div className="world-container"
+             onMouseDown={this.handleMouseDown}
+             onMouseUp={this.handleMouseUp}
+             onMouseMove={this.handleMouseMove}
+        >
+          <World world={this.state.world}/>
         </div>
 
         <Controls stopLifeCycle={this.onStopLifeCycle}
                   startLifeCycle={this.onStartLifeCycle}
-                  randomizeWorld={this.onRandomizeWorld} />
+                  randomizeWorld={this.onRandomizeWorld}/>
       </div>
     )
   }
 
-  establishConnection() {
+  establishConnection () {
     this.socket = io('http://localhost:3000')
 
     this.socket.on('world-update', (data) => {
@@ -64,21 +71,21 @@ class Game extends Component {
     this.requestWorldUpdate()
   }
 
-  requestWorldUpdate() {
+  requestWorldUpdate () {
     this.sendToServer('world-update-request')
   }
 
-  registerCellsChange(cells) {
+  registerCellsChange (cells) {
     this.sendToServer('cells-change', cells)
   }
 
-  sendToServer(eventName, data = null) {
+  sendToServer (eventName, data = null) {
     this.socket.emit(eventName, data)
   }
 
-  onWorldUpdate(data) {
+  onWorldUpdate (data) {
     return new Promise(resolve => {
-      let { world, generation, rate, size, clientsCount } = data
+      let {world, generation, rate, size, clientsCount} = data
 
       this.setState({
         size,
@@ -94,34 +101,73 @@ class Game extends Component {
     })
   }
 
-  onStopLifeCycle() {
+  onStopLifeCycle () {
     this.sendToServer('stop-lifecycle')
   }
 
-  onStartLifeCycle() {
+  onStartLifeCycle () {
     this.sendToServer('start-lifecycle')
   }
 
-  onRandomizeWorld() {
+  onRandomizeWorld () {
     this.sendToServer('randomize-world')
   }
 
-  handleClick(e) {
+  cellChange (e, value = null) {
 
-    let data = e.target.dataset
+    let {x, y} = this.getCellData(e.target)
 
-    let { x, y } = data
-
-    if(!x || !y) {
+    if (!x || !y) {
       return
     }
 
     let changedCell = this.state.world[y][x]
-    changedCell.value = changedCell.value === 1 ? 0 : 1
+
+    if (value !== null) {
+      changedCell.value = value
+    }
+    else {
+      changedCell.value = changedCell.value === 1 ? 0 : 1
+    }
 
     this.registerCellsChange([
       changedCell
     ])
+  }
+
+  getCellData ($node) {
+    let data = $node.dataset
+    let {x, y} = data
+
+    if (!x || !y) {
+      return null
+    }
+
+    return {x, y, value: this.state.world[y][x].value}
+  }
+
+  handleMouseMove (e) {
+
+    if (!this.mouseDown) {
+      return
+    }
+
+    this.cellChange(e, this.paintingValue)
+  }
+
+  handleMouseDown (e) {
+    e.preventDefault()
+
+    let cell = this.getCellData(e.target)
+    console.log(cell)
+    this.paintingValue = cell.value === 1 ? 0 : 1
+
+    this.mouseDown = true
+    this.cellChange(e, this.paintingValue)
+  }
+
+  handleMouseUp () {
+    this.mouseDown = false
   }
 }
 
