@@ -1,25 +1,31 @@
 # Game of Life (2018)
 
-According to Wikipedia, the Game of Life, also known simply as Life, is a board game originally created in 1860 by Milton Bradley, as The Checkered Game of Life. 
+The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.
 
-The Game of Life was America's first popular parlour game. The game simulates a person's travels through his or her life, from college to retirement, with jobs, marriage, and possible children along the way. 
+The game is a zero-player game, meaning that its evolution is determined by its initial state, requiring no further input.
 
-Two to six players can participate in one game. Variations of the game accommodate eight to ten players.
-
-The modern version was originally published 100 years later, in 1960. It was created and co-designed by toy and game designer Reuben Klamer and was "heartily endorsed" by Art Linkletter. 
-
-It is now part of the permanent collection of the Smithsonian's National Museum of American History and an inductee into the National Toy Hall of Fame.
-
-It's my free implementation of the game to taste some new tech features.
+One interacts with the Game of Life by creating an initial configuration and observing how it evolves, or, for advanced players, by creating patterns with particular properties.
 
 # Instructions
 
 I assume, that you have already installed Docker and Docker Compose.
 
+First of all, let's clone the repo:
+
 ```bash
 $ git clone https://github.com/max-starikevich/game-of-life-2018
+```
+
+Or though the SSH:
+
+```bash
+$ git clone https://github.com/max-starikevich/game-of-life-2018
+```
+
+And then:
+
+```bash
 $ cd game-of-life-2018
-$ cp .env.example .env
 $ docker-compose up
 ```
 
@@ -27,15 +33,12 @@ And then, open `http://localhost/` in your favourite browser, in few tabs at the
 
 It's production mode by default. 
 
-If you want to make your hands dirty, open `.env` file and change `MODE` to `development`.
-
-And then again:
+If you want to make your hands dirty, you need to start dev-version of the project:
 
 ```bash
-$ docker-compose up
+$ docker-compose -f docker-compose.dev.yml up
 ```
 
 `webpack-dev-server` will be available on port 8080. Just open `http://localhost:8080/` in the browser.
-
 
 Enjoy!
