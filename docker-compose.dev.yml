@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  backend:
+    build: docker/node
+    command: 'npm run dev'
+    environment:
+    - NODE_ENV=development
+    volumes:
+    - ./src/server:/home/node/app
+    ports:
+    - '9229:9229'
+    - '3000:3000'
+    networks:
+    - project-network
+  webpack-dev-server:
+    build: docker/node
+    command: 'npm run dev'
+    environment:
+    - NODE_ENV=development
+    volumes:
+    - ./src/client:/home/node/app
+    ports:
+    - '8080:8080'
+    networks:
+    - project-network
+networks:
+  project-network:
+    driver: bridge
+    ipam:
+      driver: default

@@ -1,10 +1,10 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const contextPath = __dirname + '/../'
+const contextPath = __dirname
 
 module.exports = {
   entry: {
-    main: path.resolve(contextPath, 'src/client/main.jsx'),
+    main: path.resolve(contextPath, 'main.jsx'),
     polyfills: [
       'babel-polyfill'
     ]
@@ -46,13 +46,13 @@ module.exports = {
   },
   resolve: {
     alias: {
-      components: path.resolve(contextPath, 'src/client/components')
+      components: path.resolve(contextPath, 'components')
     },
     extensions: ['*', '.js', '.jsx']
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(contextPath, 'src/client/index.html')
+      template: path.resolve(contextPath, 'index.html')
     })
   ]
 }

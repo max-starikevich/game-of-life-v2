@@ -1,46 +1,35 @@
-version: '2'
+version: '3'
 
 services:
   backend:
-    build: ./docker/node
-    command: npm run start:${MODE}
-    volumes:
-    - ./:/home/node/app
-    - ./logs/npm:/home/node/.npm/_logs
-    networks:
-    - local
-    ports:
-    - '3000:3000'
-    - '9229:9229'
+    build: ./src/server
+    command: npm run start
     environment:
-      - NODE_ENV=${MODE}
-  frontend:
-    build: ./docker/node
-    command: npm run webpack:${MODE}
-    volumes:
-    - ./:/home/node/app
-    - ./logs/npm:/home/node/.npm/_logs
-    links:
-      - nginx
+    - NODE_ENV=production
     networks:
-    - local
-    ports:
-    - '8080:8080'
+    - project-network
+  webpack:
+    build: src/client
+    command: npm run build
     environment:
-      - NODE_ENV=${MODE}
+    - NODE_ENV=production
+    volumes:
+    - assets:/home/node/app/dist
   nginx:
     build: ./docker/nginx
     volumes:
-    - ./dist:/var/www
-    - ./logs/nginx:/var/log/nginx
+    - assets:/var/www
     links:
       - backend
     ports:
     - '80:80'
+    - '443:443'
     networks:
-    - local
+    - project-network
 networks:
-  local:
+  project-network:
     driver: bridge
     ipam:
       driver: default
+volumes:
+  assets:
