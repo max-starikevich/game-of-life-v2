@@ -16,7 +16,7 @@ First of all, let's clone the repo (HTTPS method):
 $ git clone https://github.com/max-starikevich/game-of-life-2018
 ```
 
-Or though the SSH:
+Or through the SSH:
 
 ```bash
 $ git clone git@github.com:max-starikevich/game-of-life-2018.git
