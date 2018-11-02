@@ -4,7 +4,10 @@ const contextPath = __dirname + '/../'
 
 module.exports = {
   entry: {
-    main: path.resolve(contextPath, 'src/client/main.jsx')
+    main: path.resolve(contextPath, 'src/client/main.jsx'),
+    polyfills: [
+      'babel-polyfill'
+    ]
   },
   module: {
     rules: [
