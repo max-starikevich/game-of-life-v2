@@ -17,7 +17,7 @@ It's my free implementation of the game to taste some new tech features.
 I assume, that you have already installed Docker and Docker Compose.
 
 ```bash
-$ git clone git@github.com:max-starikevich/game-of-life-2018.git
+$ git clone https://github.com/max-starikevich/game-of-life-2018
 $ cd game-of-life-2018
 $ cp .env.example .env
 $ docker-compose up
