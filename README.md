@@ -49,7 +49,7 @@ $ cd game-of-life-2018
 $ docker-compose up --build
 ```
 
-And then, open `http://localhost/` in your favourite browser, in few tabs at the same time.
+Next, open `http://localhost/` in your favourite browser, in few tabs at the same time.
 
 It's production mode by default. 
 
