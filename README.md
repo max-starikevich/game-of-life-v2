@@ -10,7 +10,7 @@ One interacts with the Game of Life by creating an initial configuration and obs
 
 I assume, that you have already installed Docker and Docker Compose.
 
-First of all, let's clone the repo:
+First of all, let's clone the repo (HTTPS method):
 
 ```bash
 $ git clone https://github.com/max-starikevich/game-of-life-2018
@@ -19,7 +19,7 @@ $ git clone https://github.com/max-starikevich/game-of-life-2018
 Or though the SSH:
 
 ```bash
-$ git clone https://github.com/max-starikevich/game-of-life-2018
+$ git clone git@github.com:max-starikevich/game-of-life-2018.git
 ```
 
 And then:
