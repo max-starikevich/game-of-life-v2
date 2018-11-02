@@ -33,7 +33,7 @@ I assume, that you have already installed Docker and Docker Compose.
 First of all, let's clone the repo (HTTPS method):
 
 ```bash
-$ git clone https://github.com/max-starikevich/game-of-life-2018
+$ git clone https://github.com/max-starikevich/game-of-life-2018.git
 ```
 
 Or through the SSH:
