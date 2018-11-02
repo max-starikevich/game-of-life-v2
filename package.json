@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "One more 'Game of Life' implementation",
   "main": "index.js",
-  "licence": "MIT",
+  "license": "MIT",
   "scripts": {
     "test": "standard",
     "webpack:production": "webpack --config ./configs/webpack.config.js --mode production",
