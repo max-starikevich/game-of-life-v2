@@ -26,7 +26,7 @@ And then:
 
 ```bash
 $ cd game-of-life-2018
-$ docker-compose up
+$ docker-compose build && docker-compose up
 ```
 
 And then, open `http://localhost/` in your favourite browser, in few tabs at the same time.
@@ -36,7 +36,7 @@ It's production mode by default.
 If you want to make your hands dirty, you need to start dev-version of the project:
 
 ```bash
-$ docker-compose -f docker-compose.dev.yml up
+$ docker-compose -f docker-compose.dev.yml build && docker-compose -f docker-compose.dev.yml build up
 ```
 
 `webpack-dev-server` will be available on port 8080. Just open `http://localhost:8080/` in the browser.
