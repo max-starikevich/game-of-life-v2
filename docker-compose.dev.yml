@@ -2,7 +2,7 @@ version: '3'
 
 services:
   backend:
-    build: docker/node
+    build: ./docker/node
     command: 'npm run dev'
     environment:
     - NODE_ENV=development
@@ -14,7 +14,7 @@ services:
     networks:
     - project-network
   webpack-dev-server:
-    build: docker/node
+    build: ./docker/node
     command: 'npm run dev'
     environment:
     - NODE_ENV=development

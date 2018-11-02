@@ -9,7 +9,7 @@ services:
     networks:
     - project-network
   webpack:
-    build: src/client
+    build: ./src/client
     command: npm run build
     environment:
     - NODE_ENV=production
