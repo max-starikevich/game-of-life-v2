@@ -1,0 +1,7 @@
+/node_modules/
+/docker/
+/.git/
+/.gitignore
+/.env
+/.env.example
+/logs/
