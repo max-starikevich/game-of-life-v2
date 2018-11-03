@@ -28,7 +28,7 @@ The initial pattern constitutes the seed of the system. The first generation is 
 
 ## Quick start
 
-I assume, that you have already installed Docker and Docker Compose.
+I assume, that you have already installed Docker + Docker Compose.
 
 First of all, let's clone the repo (HTTPS method):
 
@@ -51,14 +51,13 @@ $ docker-compose up --build
 
 Next, open `http://localhost/` in your favourite browser, in few tabs at the same time.
 
-It's production mode by default. 
+It's production mode by default.
 
-If you want to make your hands dirty, you need to start dev-version of the project:
+If you want to make your hands dirty, you need to start the development version of the game:
 
 ```bash
 $ docker-compose -f docker-compose.dev.yml up
 ```
-
 `webpack-dev-server` will be available on port 8080. Just open `http://localhost:8080/` in the browser.
 
 Enjoy!
