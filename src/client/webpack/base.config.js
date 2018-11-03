@@ -1,13 +1,13 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const contextPath = __dirname
+const contextPath = `${__dirname}/../`
 
-module.exports = {
+const baseConfig = {
   entry: {
-    main: path.resolve(contextPath, 'main.jsx'),
     polyfills: [
       'babel-polyfill'
-    ]
+    ],
+    main: path.resolve(contextPath, 'index.js'),
   },
   module: {
     rules: [
@@ -32,18 +32,6 @@ module.exports = {
     filename: 'bundle-[name].[hash].js',
     chunkFilename: 'chunk-[name].[hash].js'
   },
-  devServer: {
-    contentBase: path.resolve(contextPath, 'dist'),
-    host: '0.0.0.0',
-    port: '8080',
-    historyApiFallback: true,
-    proxy: {
-      '/socket.io/': {
-        target: 'http://backend:3000/socket.io/',
-        ws: true
-      }
-    }
-  },
   resolve: {
     alias: {
       components: path.resolve(contextPath, 'components')
@@ -52,7 +40,12 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(contextPath, 'index.html')
+      template: path.resolve(contextPath, 'templates/index.html')
     })
   ]
+}
+
+module.exports = {
+  contextPath,
+  baseConfig
 }

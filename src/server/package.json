@@ -2,7 +2,7 @@
   "name": "game-of-life-2018-server",
   "version": "1.0.0",
   "description": "Server for 'Game of Life (2018)'",
-  "main": "../../index.js",
+  "main": "index.js",
   "license": "MIT",
   "scripts": {
     "start": "node index.js",
