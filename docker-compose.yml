@@ -3,14 +3,14 @@ version: '3'
 services:
   backend:
     build: ./src/server
-    command: npm run start
+    command: 'npm run start'
     environment:
     - NODE_ENV=production
     networks:
     - project-network
   webpack:
     build: ./src/client
-    command: npm run build
+    command: 'npm run build'
     environment:
     - NODE_ENV=production
     volumes:
