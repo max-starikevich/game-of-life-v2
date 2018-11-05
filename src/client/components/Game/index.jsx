@@ -67,11 +67,28 @@ class Game extends Component {
   establishConnection () {
     this.socket = io()
 
-    this.socket.on('world-update', (data) => {
-      this.onWorldUpdate(data)
+    this.socket.on('world-update', (...data) => {
+      this.onWorldUpdate(...data)
+    })
+
+    this.socket.on('client-data-update', (...data) => {
+      this.onClientUpdate(...data)
     })
 
     this.requestWorldUpdate()
+  }
+
+  onClientUpdate (data) {
+
+    let dataToUpdate = {}
+
+    if (data.clientsCount) {
+      dataToUpdate.clientsCount = data.clientsCount
+    }
+
+    console.log(dataToUpdate)
+
+    this.setState(dataToUpdate)
   }
 
   requestWorldUpdate () {
@@ -87,21 +104,16 @@ class Game extends Component {
   }
 
   onWorldUpdate (data) {
-    return new Promise(resolve => {
-      let {world, generation, rate, size, clientsCount} = data
+    let {world, generation, rate, size} = data
 
-      this.setState({
-        size,
-        rate,
-        generation,
-        world,
-        clientsCount
-      })
-
-      document.title = `Generation #${generation}`
-
-      resolve()
+    this.setState({
+      size,
+      rate,
+      generation,
+      world
     })
+
+    document.title = `Generation #${generation}`
   }
 
   onStopLifeCycle () {

@@ -39,6 +39,16 @@ class Core {
       })
     })
 
+    this.network.on('client-connected', (clientId) => {
+      console.log(`Client ${clientId} connected`)
+      this.sendClientDataToAllClients()
+    })
+
+    this.network.on('client-disconnected', (clientId) => {
+      console.log(`Client ${clientId} disconnected`)
+      this.sendClientDataToAllClients()
+    })
+
     await this.world.build()
 
     this.world.randomize()
@@ -73,6 +83,12 @@ class Core {
     this.sendWorldToAllClients()
   }
 
+  sendClientDataToAllClients () {
+    this.network.sendToAllClients('client-data-update', {
+      clientsCount: this.network.clients.size
+    })
+  }
+
   sendWorldToAllClients () {
     this.network.sendToAllClients('world-update', this.exportGameData())
   }
@@ -87,11 +103,9 @@ class Core {
 
   exportGameData() {
     let exportedWorld = this.world.export()
-    let clientsCount = this.network.clients.size
 
     return {
       ...exportedWorld,
-      clientsCount
     }
   }
 }
