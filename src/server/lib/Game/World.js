@@ -10,7 +10,7 @@ class World extends EventEmitter {
     this.generation = 1
   }
 
-  async build (size = this.size, initialValue = 0) {
+  async build (initialValue = 0, size = this.size) {
     let yMax = size[0]
     let xMax = size[1]
 
