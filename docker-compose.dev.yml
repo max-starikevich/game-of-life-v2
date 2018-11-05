@@ -22,6 +22,7 @@ services:
     - ./src/client:/home/node/app
     ports:
     - '8080:8080'
+    - '8888:8888'
     networks:
     - project-network
 networks:

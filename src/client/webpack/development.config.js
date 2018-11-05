@@ -1,6 +1,7 @@
 const path = require('path')
 const merge = require('webpack-merge')
 const {contextPath, baseConfig} = require('./base.config')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 module.exports = merge(baseConfig, {
   mode: 'development',
@@ -16,5 +17,8 @@ module.exports = merge(baseConfig, {
       }
     }
   },
-  devtool: 'source-map'
+  devtool: 'source-map',
+  plugins: [
+    new BundleAnalyzerPlugin(require('./bundle-analyzer.config'))
+  ]
 })
