@@ -19,6 +19,11 @@ module.exports = merge(baseConfig, {
   },
   devtool: 'source-map',
   plugins: [
-    new BundleAnalyzerPlugin(require('./bundle-analyzer.config'))
+    new BundleAnalyzerPlugin({
+        analyzerMode: 'server',
+        analyzerHost: '0.0.0.0',
+        analyzerPort: '8888'
+      }
+    )
   ]
 })
