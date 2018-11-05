@@ -86,8 +86,6 @@ class Game extends Component {
       dataToUpdate.clientsCount = data.clientsCount
     }
 
-    console.log(dataToUpdate)
-
     this.setState(dataToUpdate)
   }
 
