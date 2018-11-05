@@ -16,4 +16,5 @@ module.exports = merge(baseConfig, {
       }
     }
   },
+  devtool: 'source-map'
 })

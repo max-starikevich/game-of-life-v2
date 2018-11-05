@@ -4,9 +4,6 @@ const contextPath = `${__dirname}/../`
 
 const baseConfig = {
   entry: {
-    polyfills: [
-      'babel-polyfill'
-    ],
     main: path.resolve(contextPath, 'index.js'),
   },
   module: {
@@ -42,7 +39,20 @@ const baseConfig = {
     new HtmlWebpackPlugin({
       template: path.resolve(contextPath, 'templates/index.html')
     })
-  ]
+  ],
+  optimization: {
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /node_modules/,
+          chunks: 'all',
+          name: 'vendor',
+          enforce: true
+        },
+      }
+    }
+  }
+
 }
 
 module.exports = {
