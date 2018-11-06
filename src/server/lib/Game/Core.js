@@ -65,7 +65,7 @@ class Core {
       await this.world.startLifeCycle()
     }
     catch (e) {
-      console.log(`Lifecycle stopped. ${e.toString()}`)
+      console.log(`${e.toString()}`)
     }
   }
 

@@ -59,7 +59,7 @@ class World extends EventEmitter {
 
   async iterateWorld () {
     if (!this.cycleIsActive) {
-      throw 'Stopped explicitly'
+      throw 'Cycle stopped explicitly'
     }
 
     let {world, lifeCount} = await this.getNextGeneration()
