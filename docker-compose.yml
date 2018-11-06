@@ -3,33 +3,23 @@ version: '3'
 services:
   backend:
     build: ./src/server
-    command: 'npm run start'
-    environment:
-    - NODE_ENV=production
     networks:
-    - project-network
+    - production-network
   webpack:
     build: ./src/client
-    command: 'npm run build'
-    environment:
-    - NODE_ENV=production
     volumes:
     - assets:/home/node/app/dist
   nginx:
     build: ./docker/nginx
     volumes:
     - assets:/var/www
-    links:
-      - backend
     ports:
     - '80:80'
     - '443:443'
     networks:
-    - project-network
+    - production-network
 networks:
-  project-network:
+  production-network:
     driver: bridge
-    ipam:
-      driver: default
 volumes:
   assets:
