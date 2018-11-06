@@ -3,9 +3,6 @@ version: '3'
 services:
   backend:
     build: ./docker/node
-    command: 'npm run dev'
-    environment:
-    - NODE_ENV=development
     volumes:
     - ./src/server:/home/node/app
     ports:
@@ -15,9 +12,6 @@ services:
     - dev-network
   webpack-dev-server:
     build: ./docker/node
-    command: 'npm run dev'
-    environment:
-    - NODE_ENV=development
     volumes:
     - ./src/client:/home/node/app
     ports:
