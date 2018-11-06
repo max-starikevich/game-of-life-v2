@@ -1,7 +1,7 @@
 const EventEmitter = require('events')
 
 class World extends EventEmitter {
-  constructor (size = [20, 20], rate = 50) {
+  constructor (size = [20, 20], rate = 100) {
     super()
     this.size = size
     this.rate = rate
@@ -59,7 +59,7 @@ class World extends EventEmitter {
 
   async iterateWorld () {
     if (!this.cycleIsActive) {
-      throw 'Cycle stopped explicitly'
+      throw 'Stopped explicitly'
     }
 
     let {world, lifeCount} = await this.getNextGeneration()
