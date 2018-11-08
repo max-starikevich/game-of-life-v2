@@ -1,0 +1,14 @@
+FROM node:10.13
+
+USER node
+ENV NODE_ENV=development
+ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
+RUN mkdir /home/node/app /home/node/app/dist
+WORKDIR /home/node/app
+
+COPY --chown=node:node package*.json ./
+RUN npm install
+
+COPY --chown=node:node . .
+
+CMD ["npm", "test"]
