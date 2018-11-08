@@ -5,10 +5,10 @@ ENV NODE_ENV=production
 RUN mkdir /home/node/app
 WORKDIR /home/node/app
 
-COPY package.json .
-COPY package-lock.json .
+COPY --chown=node:node package.json .
+COPY --chown=node:node package-lock.json .
 RUN npm install --production
 
-COPY . .
+COPY --chown=node:node . .
 
 CMD npm start
