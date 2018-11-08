@@ -5,8 +5,8 @@ jobs:
     - image: maxstarikevich/game-of-life-2018:server-staging
     working_directory: /home/node/app
     user: node
-      branches:
-        only:
+    branches:
+      only:
         - master
     steps:
     - run: npm test
