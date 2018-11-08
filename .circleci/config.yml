@@ -2,7 +2,7 @@ version: 2
 jobs:
   build:
     docker:
-    - image: maxstarikevich/game-of-life-2018:server-staging
+    - image: maxstarikevich/game-of-life-2018:server-test
     working_directory: /home/node/app
     user: node
     branches:
