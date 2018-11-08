@@ -7,6 +7,6 @@ jobs:
     user: node
     branches:
       only:
-        - master
+      - staging
     steps:
     - run: npm test
