@@ -1,22 +1,22 @@
 version: 2
 jobs:
-  server-test:
+  build:
     docker:
-    - image: maxstarikevich/game-of-life-2018:server-test
+    - image: maxstarikevich/game-of-life-2018:backend-dev
     working_directory: /home/node/app
     user: node
     branches:
       only:
-      - staging
+      - master
     steps:
     - run: npm test
-  client-test:
+  frontend:
     docker:
-    - image: maxstarikevich/game-of-life-2018:client-test
+    - image: maxstarikevich/game-of-life-2018:frontend-dev
     working_directory: /home/node/app
     user: node
     branches:
       only:
-      - staging
+      - master
     steps:
     - run: npm test
