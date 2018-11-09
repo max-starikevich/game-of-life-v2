@@ -66,5 +66,26 @@ describe('class World', () => {
     assert.deepEqual(updatedCell, worldManager.getCell(y, x))
   })
 
-  it('Multiple cells should be writable', () => {})
+  it('Multiple cells should be writable', () => {
+    let cells = [
+      {
+        y: 0, x: 0, value: 1
+      },
+      {
+        y: 2, x: 0, value: 1
+      },
+      {
+        y: 0, x: 1, value: 1
+      },
+      {
+        y: 1, x: 1, value: 1
+      },
+    ]
+
+    worldManager.modifyCells(cells)
+
+    for (let cell of cells) {
+      assert.deepEqual(cell, worldManager.getCell(cell.y, cell.x))
+    }
+  })
 })
