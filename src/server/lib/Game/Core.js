@@ -2,25 +2,25 @@ const Network = require('./Network')
 const World = require('./World')
 
 const clientEvents = {
-  'stop-lifecycle': async (core) => {
-    await core.stopGame()
+  'stop-lifecycle': (core) => {
+    core.stopGame()
   },
-  'start-lifecycle': async (core) => {
-    await core.startGame()
+  'start-lifecycle': (core) => {
+    core.startGame().then()
   },
-  'randomize-world': async (core) => {
-    await core.randomizeWorld()
-    await core.sendWorldToAllClients()
+  'randomize-world': (core) => {
+    core.randomizeWorld().then()
+    core.sendWorldToAllClients()
   },
-  'clear-world': async (core) => {
-    await core.clearWorld()
-    await core.sendWorldToAllClients()
+  'clear-world': (core) => {
+    core.clearWorld().then()
+    core.sendWorldToAllClients()
   },
-  'world-update-request': async (core, data, socket) => {
-    await core.sendWorldToClient(socket)
+  'world-update-request': (core, data, socket) => {
+    core.sendWorldToClient(socket)
   },
-  'cells-change': async (core, data) => {
-    await core.registerCellsChange(data)
+  'cells-change': (core, data) => {
+    core.registerCellsChange(data)
   }
 }
 
@@ -31,7 +31,7 @@ class Core {
   }
 
   async prepareGame () {
-    await this.network.establish()
+    this.network.establish()
 
     Object.keys(clientEvents).map(eventName => {
       this.network.on(eventName, (data, socket) => {
@@ -49,8 +49,7 @@ class Core {
       this.sendClientDataToAllClients()
     })
 
-    await this.world.build()
-    await this.world.randomize()
+    this.world.build()
 
     this.world.on('world-update', () => {
       this.onWorldUpdate()
@@ -65,13 +64,18 @@ class Core {
       await this.world.startLifeCycle()
     }
     catch (e) {
-      console.log(`${e.toString()}`)
+      if (e instanceof Error) {
+        console.error(e)
+      }
+      else {
+        console.log(`${e.toString()}`)
+      }
     }
   }
 
-  async stopGame () {
-    await this.world.stopLifeCycle()
-    await this.sendWorldToAllClients()
+  stopGame () {
+    this.world.stopLifeCycle()
+    this.sendWorldToAllClients()
   }
 
   async randomizeWorld () {
@@ -83,7 +87,7 @@ class Core {
   }
 
   onWorldUpdate () {
-    this.sendWorldToAllClients().then(() => {})
+    this.sendWorldToAllClients()
   }
 
   sendClientDataToAllClients () {
@@ -92,23 +96,21 @@ class Core {
     })
   }
 
-  async sendWorldToAllClients () {
-    this.network.sendToAllClients('world-update', await this.exportGameData())
+  sendWorldToAllClients () {
+    this.network.sendToAllClients('world-update', this.exportGameData())
   }
 
-  async sendWorldToClient (socket) {
-    this.network.sendToClient(socket, 'world-update', await this.exportGameData())
+  sendWorldToClient (socket) {
+    this.network.sendToClient(socket, 'world-update', this.exportGameData())
   }
 
   registerCellsChange(cells) {
-    this.world.modifyCells(cells).then(() => {})
+    this.world.modifyCells(cells)
   }
 
-  async exportGameData () {
-    let exportedWorld = await this.world.export()
-
+  exportGameData () {
     return {
-      ...exportedWorld,
+      ...this.world.export(),
     }
   }
 }

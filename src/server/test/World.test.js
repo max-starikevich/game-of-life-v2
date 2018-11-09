@@ -1,16 +1,14 @@
 const assert = require('chai').assert
 const World = require('../lib/Game/World')
 
-describe('World object', () => {
-
+describe('class World', () => {
   const size = [3, 3]
   const rate = 100
   const initialValue = 1
 
   let worldManager = new World(size, rate)
 
-  it('should have correct structure', async () => {
-
+  it('World object should have correct structure', () => {
     const example = [
       [
         {
@@ -47,10 +45,47 @@ describe('World object', () => {
       ],
     ]
 
-    await worldManager.build(initialValue)
+    worldManager.build(initialValue)
 
-    let {world} = await worldManager.export()
+    let {world} = worldManager.export()
 
     assert.deepEqual(world, example)
+  })
+
+  it('Cell should be writable', () => {
+    let y = 0
+    let x = 0
+    let value = 1
+
+    let updatedCell = {
+      y, x, value
+    }
+
+    worldManager.modifyCell(updatedCell)
+
+    assert.deepEqual(updatedCell, worldManager.getCell(y, x))
+  })
+
+  it('Multiple cells should be writable', () => {
+    let cells = [
+      {
+        y: 0, x: 0, value: 1
+      },
+      {
+        y: 2, x: 0, value: 1
+      },
+      {
+        y: 0, x: 1, value: 1
+      },
+      {
+        y: 1, x: 1, value: 1
+      },
+    ]
+
+    worldManager.modifyCells(cells)
+
+    for (let cell of cells) {
+      assert.deepEqual(cell, worldManager.getCell(cell.y, cell.x))
+    }
   })
 })
