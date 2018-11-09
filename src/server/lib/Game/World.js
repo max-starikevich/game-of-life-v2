@@ -10,7 +10,7 @@ class World extends EventEmitter {
     this.generation = 1
   }
 
-  async build (initialValue = 0, size = this.size) {
+  build (initialValue = 0, size = this.size) {
     let yMax = size[0]
     let xMax = size[1]
 
@@ -33,8 +33,6 @@ class World extends EventEmitter {
     }
 
     this.world = world
-
-    return true
   }
 
   async startLifeCycle (rate = this.rate) {
@@ -55,6 +53,8 @@ class World extends EventEmitter {
       this.cycleIsActive = false
       throw e
     }
+
+    return true
   }
 
   async iterateWorld () {
@@ -75,9 +75,8 @@ class World extends EventEmitter {
     return true
   }
 
-  async stopLifeCycle () {
+  stopLifeCycle () {
     this.cycleIsActive = false
-    return true
   }
 
   async randomize () {
@@ -142,17 +141,15 @@ class World extends EventEmitter {
     })
   }
 
-  async modifyCells (cellsToChange = []) {
+  modifyCells (cellsToChange = []) {
     cellsToChange.map(cell => {
-      this.modifyCell(cell).then(() => {})
+      this.modifyCell(cell).then()
     })
 
     this.emit('world-update')
-
-    return true
   }
 
-  async modifyCell (cell, emitUpdate = false) {
+  modifyCell (cell, emitUpdate = false) {
     let {y, x, value} = cell
 
     this.world[y][x] = {
@@ -180,7 +177,7 @@ class World extends EventEmitter {
     }
   }
 
-  async getNeighborCount (y, x) {
+  getNeighborCount (y, x) {
     let world = this.world
     let up = y - 1
     let down = y + 1
@@ -215,7 +212,7 @@ class World extends EventEmitter {
     return neighborsCount
   }
 
-  async export () {
+  export () {
     return {
       rate: this.rate,
       size: this.size,

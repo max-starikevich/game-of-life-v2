@@ -8,7 +8,7 @@ class Network extends EventEmitter {
     this.clientEvents = clientEvents
   }
 
-  async establish () {
+  establish () {
     this.io.on('connection', (socket) => {
       this.onConnectedClient(socket)
     })
