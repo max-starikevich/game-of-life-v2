@@ -143,7 +143,7 @@ class World extends EventEmitter {
 
   modifyCells (cellsToChange = []) {
     cellsToChange.map(cell => {
-      this.modifyCell(cell).then()
+      this.modifyCell(cell)
     })
 
     this.emit('world-update')

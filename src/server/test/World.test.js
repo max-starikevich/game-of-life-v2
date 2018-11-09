@@ -47,9 +47,9 @@ describe('World object', () => {
       ],
     ]
 
-    await worldManager.build(initialValue)
+    worldManager.build(initialValue)
 
-    let {world} = await worldManager.export()
+    let {world} = worldManager.export()
 
     assert.deepEqual(world, example)
   })
