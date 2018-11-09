@@ -105,7 +105,7 @@ class Core {
   }
 
   registerCellsChange(cells) {
-    this.world.modifyCells(cells).then()
+    this.world.modifyCells(cells)
   }
 
   exportGameData () {
