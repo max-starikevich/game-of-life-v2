@@ -150,17 +150,31 @@ class World extends EventEmitter {
   }
 
   modifyCell (cell, emitUpdate = false) {
-    let {y, x, value} = cell
+    try {
+      let {y, x, value} = cell
 
-    this.world[y][x] = {
-      y, x, value
+      this.world[y][x] = {
+        y, x, value
+      }
+
+      if (emitUpdate) {
+        this.emit('world-update')
+      }
+
+      return this.world[y][x]
     }
-
-    if (emitUpdate) {
-      this.emit('world-update')
+    catch (e) {
+      return null
     }
+  }
 
-    return this.world[y][x]
+  getCell (y, x) {
+    try {
+      return this.world[y][x]
+    }
+    catch (e) {
+      return null
+    }
   }
 
   async getFutureCell (y, x) {
