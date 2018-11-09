@@ -1,8 +1,9 @@
-version: '3'
+version: '2'
 
 services:
   backend:
     build: ./docker/node
+    mem_limit: 256M
     volumes:
     - ./src/server:/home/node/app
     ports:
@@ -12,6 +13,7 @@ services:
     - dev-network
   webpack-dev-server:
     build: ./docker/node
+    mem_limit: 512M
     volumes:
     - ./src/client:/home/node/app
     ports:
