@@ -1,4 +1,4 @@
-# Game of Life (2018)
+# Game of Life
 
 It's one more implementation of Conway's Game of Life. This version stands out because of socket-based "multiplayer" support. Just open the app in few tabs at the same time and you will same what I'm talking about.
 
@@ -33,19 +33,19 @@ I assume, that you have already installed Docker + Docker Compose.
 First of all, let's clone the repo (HTTPS method):
 
 ```bash
-$ git clone https://github.com/max-starikevich/game-of-life-2018.git
+$ git clone https://github.com/max-starikevich/game-of-life.git
 ```
 
 Or through the SSH:
 
 ```bash
-$ git clone git@github.com:max-starikevich/game-of-life-2018.git
+$ git clone git@github.com:max-starikevich/game-of-life.git
 ```
 
 And then:
 
 ```bash
-$ cd game-of-life-2018
+$ cd game-of-life
 $ docker-compose up --build
 ```
 
