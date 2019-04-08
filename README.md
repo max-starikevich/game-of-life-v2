@@ -1,6 +1,6 @@
 # Game of Life
 
-It's one more implementation of Conway's Game of Life. This version stands out because of socket-based "multiplayer" support. Just open the app in few tabs at the same time and you will same what I'm talking about.
+It's one more implementation of Conway's Game of Life. This version stands out because of socket-based "multiplayer" support. Just open the app in few tabs at the same time and you will see what I'm talking about.
 
 Also you are able to control lifecycle.
 
