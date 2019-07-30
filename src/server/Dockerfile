@@ -1,4 +1,4 @@
-FROM node:10.13-alpine
+FROM node:10.15-alpine
 
 USER node
 ENV NODE_ENV=production
@@ -6,9 +6,9 @@ ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
 RUN mkdir /home/node/app
 WORKDIR /home/node/app
 
-COPY --chown=node:node package*.json ./
-RUN npm install --production
+COPY package.json yarn.lock ./
+RUN yarn install 
 
-COPY --chown=node:node . .
+COPY . .
 
 CMD ["node", "index.js"]
