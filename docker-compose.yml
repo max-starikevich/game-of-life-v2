@@ -1,28 +1,7 @@
 version: '2'
 
 services:
-  backend:
+  server:
     build: ./src/server
-    mem_limit: 128M
-    networks:
-    - production-network
-  webpack:
+  client:
     build: ./src/client
-    mem_limit: 512M
-    volumes:
-    - assets:/home/node/app/dist
-  nginx:
-    build: ./docker/nginx
-    mem_limit: 512M
-    volumes:
-    - assets:/var/www
-    ports:
-    - '80:80'
-    - '443:443'
-    networks:
-    - production-network
-networks:
-  production-network:
-    driver: bridge
-volumes:
-  assets:
