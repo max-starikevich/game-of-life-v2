@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 class Controls extends Component {
   render () {
     return (
-      <div className="world-control">
+      <div className='world-control'>
         <button onClick={this.props.startLifeCycle}>
           Start
         </button>

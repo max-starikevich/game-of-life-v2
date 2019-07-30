@@ -1,3 +1,5 @@
+/* global describe, expect, it */
+
 const World = require('./World')
 
 describe('class World', () => {
@@ -18,7 +20,7 @@ describe('class World', () => {
         },
         {
           x: 2, y: 0, value: initialValue
-        },
+        }
       ],
       [
         {
@@ -29,7 +31,7 @@ describe('class World', () => {
         },
         {
           x: 2, y: 1, value: initialValue
-        },
+        }
       ],
       [
         {
@@ -40,8 +42,8 @@ describe('class World', () => {
         },
         {
           x: 2, y: 2, value: initialValue
-        },
-      ],
+        }
+      ]
     ]
 
     worldManager.build(initialValue)
@@ -77,12 +79,12 @@ describe('class World', () => {
       },
       {
         y: 1, x: 1, value: 1
-      },
+      }
     ]
 
     worldManager.modifyCells(cells)
 
-    for (let cell of cells) {
+    for (const cell of cells) {
       expect(cell).toEqual(worldManager.getCell(cell.y, cell.x))
     }
   })

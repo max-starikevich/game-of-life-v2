@@ -14,7 +14,7 @@ game.prepareGame().then(async () => {
   await game.startGame()
 })
 
-server.listen(3000, '0.0.0.0')
+server.listen(9000)
 
 app.use(async (ctx) => {
   ctx.type = 'html'

@@ -3,8 +3,6 @@
   "version": "1.0.0",
   "description": "Client for 'Game of Life (2018)'",
   "main": "index.js",
-  "license": "MIT",
-  "private": true,
   "dependencies": {
     "node-sass": "^4.12.0",
     "react": "^16.8.6",

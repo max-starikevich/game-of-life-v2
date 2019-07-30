@@ -3,17 +3,17 @@ import { Row } from './components/Row'
 import './styles.scss'
 
 class World extends Component {
-  render() {
-    if(!this.props.world) {
+  render () {
+    if (!this.props.world) {
       return null
     }
 
-    let rows = this.props.world.map((row, index) =>
+    const rows = this.props.world.map((row, index) =>
       <Row cells={row} key={index} />
     )
 
     return (
-      <div className="rows-container">
+      <div className='rows-container'>
         { rows }
       </div>
     )
@@ -23,4 +23,3 @@ class World extends Component {
 export {
   World
 }
-

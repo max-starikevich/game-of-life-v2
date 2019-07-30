@@ -1,0 +1,14 @@
+{
+  "name": "game-of-life",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:max-starikevich/game-of-life.git",
+  "author": "Max Starikevich <maxim.starikevich@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "standard": "^13.1.0"
+  },
+  "scripts": {
+    "format": "standard --fix"
+  }
+}
