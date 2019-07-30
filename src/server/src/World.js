@@ -11,16 +11,16 @@ class World extends EventEmitter {
   }
 
   build (initialValue = 0, size = this.size) {
-    let yMax = size[0]
-    let xMax = size[1]
+    const yMax = size[0]
+    const xMax = size[1]
 
     const world = []
 
     for (let i = 0; i < yMax; i++) {
-      let row = []
+      const row = []
 
       for (let j = 0; j < xMax; j++) {
-        let cell = {
+        const cell = {
           y: i,
           x: j,
           value: initialValue
@@ -37,7 +37,7 @@ class World extends EventEmitter {
 
   async startLifeCycle (rate = this.rate) {
     if (this.cycleIsActive) {
-      throw 'Cycle is already started'
+      throw new Error('Cycle is already started')
     }
 
     try {
@@ -48,21 +48,18 @@ class World extends EventEmitter {
         await this.iterateWorld()
         this.generation++
       }
-    }
-    catch (e) {
+    } catch (e) {
       this.cycleIsActive = false
       throw e
     }
-
-    return true
   }
 
   async iterateWorld () {
     if (!this.cycleIsActive) {
-      throw 'Cycle stopped explicitly'
+      throw new Error('Cycle stopped explicitly')
     }
 
-    let {world, lifeCount} = await this.getNextGeneration()
+    const { world, lifeCount } = await this.getNextGeneration()
 
     this.world = world
 
@@ -80,8 +77,8 @@ class World extends EventEmitter {
   }
 
   async randomize () {
-    let world = this.world
-    let cellChangePromises = []
+    const world = this.world
+    const cellChangePromises = []
     for (let i = 0; i < world.length; i++) {
       for (let j = 0; j < world[i].length; j++) {
         cellChangePromises.push(new Promise((resolve) => {
@@ -96,8 +93,8 @@ class World extends EventEmitter {
   }
 
   async clear () {
-    let world = this.world
-    let cellChangePromises = []
+    const world = this.world
+    const cellChangePromises = []
     for (let i = 0; i < world.length; i++) {
       for (let j = 0; j < world[i].length; j++) {
         cellChangePromises.push(new Promise((resolve) => {
@@ -112,13 +109,13 @@ class World extends EventEmitter {
   }
 
   async getNextGeneration () {
-    let world = this.world
-    let nextWorld = JSON.parse(JSON.stringify(world))
+    const world = this.world
+    const nextWorld = JSON.parse(JSON.stringify(world))
     let lifeCount = 0
 
     for (let i = 0; i < nextWorld.length; i++) {
       for (let j = 0; j < nextWorld[i].length; j++) {
-        let futureCell = await this.getFutureCell(i, j)
+        const futureCell = await this.getFutureCell(i, j)
         nextWorld[i][j] = futureCell
 
         if (futureCell.value === 1) {
@@ -151,7 +148,7 @@ class World extends EventEmitter {
 
   modifyCell (cell, emitUpdate = false) {
     try {
-      let {y, x, value} = cell
+      const { y, x, value } = cell
 
       this.world[y][x] = {
         y, x, value
@@ -162,8 +159,7 @@ class World extends EventEmitter {
       }
 
       return this.world[y][x]
-    }
-    catch (e) {
+    } catch (e) {
       return null
     }
   }
@@ -171,15 +167,14 @@ class World extends EventEmitter {
   getCell (y, x) {
     try {
       return this.world[y][x]
-    }
-    catch (e) {
+    } catch (e) {
       return null
     }
   }
 
   async getFutureCell (y, x) {
-    let world = this.world
-    let count = await this.getNeighborCount(y, x, world)
+    const world = this.world
+    const count = await this.getNeighborCount(y, x, world)
     let value = 0
 
     if (count === 3 || (count === 2 && world[y][x].value === 1)) {
@@ -192,7 +187,7 @@ class World extends EventEmitter {
   }
 
   getNeighborCount (y, x) {
-    let world = this.world
+    const world = this.world
     let up = y - 1
     let down = y + 1
     let left = x - 1
@@ -211,7 +206,7 @@ class World extends EventEmitter {
       down = 0
     }
 
-    let neighbors = [world[up][x], world[up][right],
+    const neighbors = [world[up][x], world[up][right],
       world[y][right], world[down][right], world[down][x],
       world[down][left], world[y][left], world[up][left]]
 

@@ -15,7 +15,7 @@ class Network extends EventEmitter {
   }
 
   onConnectedClient (socket) {
-    let clientId = socket.id
+    const clientId = socket.id
 
     this.clients.set(clientId, {
       id: clientId,
@@ -28,7 +28,7 @@ class Network extends EventEmitter {
       this.onDisconnectedClient(clientId)
     })
 
-    for (let eventName of this.clientEvents) {
+    for (const eventName of this.clientEvents) {
       socket.on(eventName, (data) => {
         this.emit(eventName, data, socket)
       })

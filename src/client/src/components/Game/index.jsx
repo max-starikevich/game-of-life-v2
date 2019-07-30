@@ -33,38 +33,38 @@ class Game extends Component {
   render () {
     if (!this.state.world) {
       return (
-        <div className="world-not-ready">
+        <div className='world-not-ready'>
           Loading gamedata...
         </div>
       )
     }
 
     return (
-      <div className="game">
+      <div className='game'>
         <Header generation={this.state.generation}
-                rate={this.state.rate}
-                size={this.state.size}
-                clientsCount={this.state.clientsCount}/>
+          rate={this.state.rate}
+          size={this.state.size}
+          clientsCount={this.state.clientsCount} />
 
-        <div className="world-container"
-             onMouseDown={this.handleMouseDown}
-             onMouseUp={this.handleMouseUp}
-             onMouseMove={this.handleMouseMove}
+        <div className='world-container'
+          onMouseDown={this.handleMouseDown}
+          onMouseUp={this.handleMouseUp}
+          onMouseMove={this.handleMouseMove}
         >
-          <World world={this.state.world}/>
+          <World world={this.state.world} />
         </div>
 
         <Controls stopLifeCycle={this.onStopLifeCycle}
-                  startLifeCycle={this.onStartLifeCycle}
-                  randomizeWorld={this.onRandomizeWorld}
-                  clearWorld={this.onClearWorld}
+          startLifeCycle={this.onStartLifeCycle}
+          randomizeWorld={this.onRandomizeWorld}
+          clearWorld={this.onClearWorld}
         />
       </div>
     )
   }
 
   establishConnection () {
-    this.socket = io()
+    this.socket = io('http://localhost:9000')
 
     this.socket.on('world-update', (...data) => {
       this.onWorldUpdate(...data)
@@ -78,8 +78,7 @@ class Game extends Component {
   }
 
   onClientUpdate (data) {
-
-    let dataToUpdate = {}
+    const dataToUpdate = {}
 
     if (data.clientsCount) {
       dataToUpdate.clientsCount = data.clientsCount
@@ -101,7 +100,7 @@ class Game extends Component {
   }
 
   onWorldUpdate (data) {
-    let {world, generation, rate, size} = data
+    const { world, generation, rate, size } = data
 
     this.setState({
       size,
@@ -131,40 +130,39 @@ class Game extends Component {
 
   cellChange (e, explicitValue = null) {
     try {
-      let { x, y, value } = this.getCellData(e.target)
+      const { x, y, value } = this.getCellData(e.target)
 
       if (!x || !y) {
         return
       }
 
-      let changedCell = {
+      const changedCell = {
         x, y
       }
 
       if (explicitValue !== null) {
         changedCell.value = explicitValue
-      }
-      else {
+      } else {
         changedCell.value = value === 1 ? 0 : 1
       }
 
       this.registerCellsChange([
         changedCell
       ])
-    } catch(e) {
+    } catch (e) {
 
     }
   }
 
   getCellData ($node) {
-    let data = $node.dataset
-    let {x, y} = data
+    const data = $node.dataset
+    const { x, y } = data
 
     if (!x || !y) {
       return null
     }
 
-    return {x, y, value: this.state.world[y][x].value}
+    return { x, y, value: this.state.world[y][x].value }
   }
 
   handleMouseMove (e) {
@@ -179,12 +177,12 @@ class Game extends Component {
     try {
       e.preventDefault()
 
-      let cell = this.getCellData(e.target)
+      const cell = this.getCellData(e.target)
       this.paintingValue = cell.value === 1 ? 0 : 1
 
       this.mouseDown = true
       this.cellChange(e, this.paintingValue)
-    } catch(e) {
+    } catch (e) {
 
     }
   }

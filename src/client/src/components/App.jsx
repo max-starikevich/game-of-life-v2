@@ -7,10 +7,10 @@ import { Game } from './Game'
 class App extends Component {
   render () {
     return (
-      <div className="app-container">
-        <Header/>
+      <div className='app-container'>
+        <Header />
         <Game />
-        <Footer/>
+        <Footer />
       </div>
     )
   }

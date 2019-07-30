@@ -62,12 +62,10 @@ class Core {
     try {
       console.log('Starting lifecycle')
       await this.world.startLifeCycle()
-    }
-    catch (e) {
+    } catch (e) {
       if (e instanceof Error) {
         console.error(e)
-      }
-      else {
+      } else {
         console.log(`${e.toString()}`)
       }
     }
@@ -104,13 +102,13 @@ class Core {
     this.network.sendToClient(socket, 'world-update', this.exportGameData())
   }
 
-  registerCellsChange(cells) {
+  registerCellsChange (cells) {
     this.world.modifyCells(cells)
   }
 
   exportGameData () {
     return {
-      ...this.world.export(),
+      ...this.world.export()
     }
   }
 }
