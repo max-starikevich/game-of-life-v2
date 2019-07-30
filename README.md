@@ -25,39 +25,3 @@ Any live cell with more than three live neighbors dies, as if by overpopulation.
 Any dead cell with exactly three live neighbors becomes a live cell, as if by reproduction.
 
 The initial pattern constitutes the seed of the system. The first generation is created by applying the above rules simultaneously to every cell in the seed; births and deaths occur simultaneously, and the discrete moment at which this happens is sometimes called a tick. Each generation is a pure function of the preceding one. The rules continue to be applied repeatedly to create further generations.
-
-## Quick start
-
-I assume, that you have already installed Docker + Docker Compose.
-
-First of all, let's clone the repo (HTTPS method):
-
-```bash
-$ git clone https://github.com/max-starikevich/game-of-life.git
-```
-
-Or through the SSH:
-
-```bash
-$ git clone git@github.com:max-starikevich/game-of-life.git
-```
-
-And then:
-
-```bash
-$ cd game-of-life
-$ docker-compose up --build
-```
-
-Next, open `http://localhost/` in your favourite browser, in few tabs at the same time.
-
-It's production mode by default.
-
-If you want to make your hands dirty, you need to start the development version of the game:
-
-```bash
-$ docker-compose -f docker-compose.dev.yml up
-```
-`webpack-dev-server` will be available on port 8080. Just open `http://localhost:8080/` in the browser.
-
-Enjoy!

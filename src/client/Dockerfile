@@ -1,14 +1,28 @@
-FROM node:10.13-alpine
+# stage 1: compile a build
+FROM node:10.15-slim as CRA
 
 USER node
-ENV NODE_ENV=production
 ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
-RUN mkdir /home/node/app /home/node/app/dist
+ENV NODE_ENV=production
+RUN mkdir -p /home/node/app
 WORKDIR /home/node/app
 
-COPY --chown=node:node package*.json ./
-RUN npm install --production
+# create a layer with node_modules
+COPY package.json yarn.lock ./
+RUN yarn install
 
-COPY --chown=node:node . .
+# create a layer with the build artifact (using only necessary source code)
+COPY public ./public
+COPY src ./src
 
-CMD ["webpack", "--config", "./webpack/production.config.js"]
+RUN yarn build
+
+# stage 2: copy the build artifact to nginx-based image and finish the image
+FROM nginx:1.15-alpine as web-proxy
+
+COPY --from=CRA /home/node/app/build /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
