@@ -1,7 +1,7 @@
 {
-  "name": "game-of-life-2018-server",
+  "name": "game-of-life-v2-server",
   "version": "1.0.0",
-  "description": "Server for 'Game of Life (2018)'",
+  "description": "Server for 'Game of Life v2'",
   "main": "index.js",
   "license": "MIT",
   "scripts": {
@@ -11,14 +11,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/max-starikevich/game-of-life-2018.git"
+    "url": "git+https://github.com/max-starikevich/game-of-life-v2.git"
   },
   "keywords": [],
   "author": "Max Starikevich <maxim.starikevich@gmail.com>",
   "bugs": {
-    "url": "https://github.com/max-starikevich/game-of-life-2018/issues"
+    "url": "https://github.com/max-starikevich/game-of-life-v2/issues"
   },
-  "homepage": "https://github.com/max-starikevich/game-of-life-2018#readme",
+  "homepage": "https://github.com/max-starikevich/game-of-life-v2#readme",
   "dependencies": {
     "koa": "^2.6.1",
     "socket.io": "^2.1.1"
