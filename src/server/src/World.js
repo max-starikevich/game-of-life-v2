@@ -1,7 +1,7 @@
 const EventEmitter = require('events')
 
 class World extends EventEmitter {
-  constructor (size = [20, 20], rate = 100) {
+  constructor (size = [20, 30], rate = 100) {
     super()
     this.size = size
     this.rate = rate
@@ -37,7 +37,9 @@ class World extends EventEmitter {
 
   async startLifeCycle (rate = this.rate) {
     if (this.cycleIsActive) {
-      throw new Error('Cycle is already started')
+      throw {
+        message: 'Cycle is already started'
+      }
     }
 
     try {
@@ -56,7 +58,9 @@ class World extends EventEmitter {
 
   async iterateWorld () {
     if (!this.cycleIsActive) {
-      throw new Error('Cycle stopped explicitly')
+      throw {
+        message: 'Cycle stopped explicitly'
+      }
     }
 
     const { world, lifeCount } = await this.getNextGeneration()
@@ -78,32 +82,24 @@ class World extends EventEmitter {
 
   async randomize () {
     const world = this.world
-    const cellChangePromises = []
+
     for (let i = 0; i < world.length; i++) {
       for (let j = 0; j < world[i].length; j++) {
-        cellChangePromises.push(new Promise((resolve) => {
-          resolve(world[i][j].value = Math.round(Math.random()))
-        }))
+        world[i][j].value = Math.round(Math.random())
       }
     }
-
-    await Promise.all(cellChangePromises)
 
     return true
   }
 
   async clear () {
     const world = this.world
-    const cellChangePromises = []
+
     for (let i = 0; i < world.length; i++) {
       for (let j = 0; j < world[i].length; j++) {
-        cellChangePromises.push(new Promise((resolve) => {
-          resolve(world[i][j].value = 0)
-        }))
+        world[i][j].value = 0
       }
     }
-
-    await Promise.all(cellChangePromises)
 
     return true
   }
@@ -188,6 +184,7 @@ class World extends EventEmitter {
 
   getNeighborCount (y, x) {
     const world = this.world
+
     let up = y - 1
     let down = y + 1
     let left = x - 1
@@ -206,19 +203,20 @@ class World extends EventEmitter {
       down = 0
     }
 
-    const neighbors = [world[up][x], world[up][right],
-      world[y][right], world[down][right], world[down][x],
-      world[down][left], world[y][left], world[up][left]]
+    const neighbors = [
+      world[up][x],
+      world[up][right],
+      world[y][right],
+      world[down][right],
+      world[down][x],
+      world[down][left],
+      world[y][left],
+      world[up][left]
+    ]
 
-    let neighborsCount = 0
-
-    neighbors.map(neighbor => {
-      if (neighbor.value === 1) {
-        neighborsCount++
-      }
-    })
-
-    return neighborsCount
+    return neighbors.reduce((neighborsCount, { value }) =>
+      value === 1 ? ++neighborsCount : neighborsCount
+    , 0)
   }
 
   export () {
