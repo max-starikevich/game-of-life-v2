@@ -6,7 +6,8 @@
   "license": "MIT",
   "scripts": {
     "start": "nodemon --inspect index.js",
-    "test": "jest"
+    "test": "standard && jest",
+    "format": "standard --fix"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "jest": "^24.8.0",
-    "nodemon": "^1.18.5"
+    "nodemon": "^1.18.5",
+    "standard": "*"
   }
 }

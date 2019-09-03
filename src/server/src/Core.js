@@ -63,6 +63,10 @@ class Core {
       if (e instanceof Error) {
         console.error(e)
       }
+
+      if (e.type === 'action') {
+        console.log(e.message)
+      }
     }
   }
 
