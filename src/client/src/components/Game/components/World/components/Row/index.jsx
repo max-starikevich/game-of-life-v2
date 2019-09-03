@@ -5,7 +5,8 @@ import './styles.scss'
 class Row extends Component {
   render () {
     const cells = this.props.cells.map((cell, index) =>
-      <Cell y={cell.y}
+      <Cell
+        y={cell.y}
         x={cell.x}
         value={cell.value}
         key={index}
@@ -14,7 +15,7 @@ class Row extends Component {
 
     return (
       <div className='row'>
-        { cells }
+        {cells}
       </div>
     )
   }

@@ -34,19 +34,22 @@ class Game extends Component {
     if (!this.state.world) {
       return (
         <div className='world-not-ready'>
-          Loading gamedata...
+          Loading...
         </div>
       )
     }
 
     return (
       <div className='game'>
-        <Header generation={this.state.generation}
+        <Header
+          generation={this.state.generation}
           rate={this.state.rate}
           size={this.state.size}
-          clientsCount={this.state.clientsCount} />
+          clientsCount={this.state.clientsCount}
+        />
 
-        <div className='world-container'
+        <div
+          className='world-container'
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
           onMouseMove={this.handleMouseMove}
@@ -54,7 +57,8 @@ class Game extends Component {
           <World world={this.state.world} />
         </div>
 
-        <Controls stopLifeCycle={this.onStopLifeCycle}
+        <Controls
+          stopLifeCycle={this.onStopLifeCycle}
           startLifeCycle={this.onStartLifeCycle}
           randomizeWorld={this.onRandomizeWorld}
           clearWorld={this.onClearWorld}

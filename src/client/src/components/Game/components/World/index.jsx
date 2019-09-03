@@ -14,7 +14,7 @@ class World extends Component {
 
     return (
       <div className='rows-container'>
-        { rows }
+        {rows}
       </div>
     )
   }
