@@ -56,21 +56,12 @@ class Core {
   }
 
   startGame () {
-    try {
-      console.log('Starting lifecycle')
-      this.world.startLifeCycle()
-    } catch (e) {
-      if (e instanceof Error) {
-        console.error(e)
-      }
-
-      if (e.type === 'action') {
-        console.log(e.message)
-      }
-    }
+    console.log('Started lifecycle')
+    this.world.startLifeCycle()
   }
 
   stopGame () {
+    console.log('Stopped lifecycle')
     this.world.stopLifeCycle()
     this.sendWorldToAllClients()
   }
@@ -102,6 +93,7 @@ class Core {
   }
 
   registerCellsChange (cells) {
+    console.log(`Cell change: ${JSON.stringify(cells)}`)
     this.world.modifyCells(cells)
   }
 

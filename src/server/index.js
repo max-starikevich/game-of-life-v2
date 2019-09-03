@@ -13,7 +13,6 @@ const game = new Core(io)
 
 game.prepareGame().then(() => {
   console.log('Game of Life is online')
-  game.startGame()
 })
 
 process.on('unhandledRejection', (reason, p) => {

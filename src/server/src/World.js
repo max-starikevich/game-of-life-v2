@@ -44,11 +44,15 @@ class World extends EventEmitter {
       this.cycleIsActive = true
 
       while (1) {
-        await this.delay(rate)
-        if (!await this.iterateWorld()) {
+        const shouldContinue = await this.iterateWorld()
+
+        if (!shouldContinue) {
           break
         }
+
         this.generation++
+
+        await this.delay(rate)
       }
     } catch (e) {
       this.cycleIsActive = false
@@ -57,8 +61,7 @@ class World extends EventEmitter {
 
   async iterateWorld () {
     if (!this.cycleIsActive) {
-      const action = { type: 'action', message: 'Cycle stopped explicitly' }
-      throw action
+      return false
     }
 
     const { world, lifeCount } = await this.getNextGeneration()
