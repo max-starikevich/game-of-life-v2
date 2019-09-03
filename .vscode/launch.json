@@ -1,0 +1,20 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Chrome debug",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}/src/client"
+    },
+      {
+          "type": "node",
+          "request": "attach",
+          "name": "Node.js attach",
+          "processId": "${command:PickProcess}",
+          "restart": true,
+          "protocol": "inspector",
+      },
+  ]
+}

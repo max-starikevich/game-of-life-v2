@@ -2,18 +2,18 @@ const Network = require('./Network')
 const World = require('./World')
 
 const clientEvents = {
-  'stop-lifecycle': (core) => {
+  'stop-lifecycle': core => {
     core.stopGame()
   },
-  'start-lifecycle': (core) => {
-    core.startGame().then()
+  'start-lifecycle': core => {
+    core.startGame()
   },
-  'randomize-world': (core) => {
-    core.randomizeWorld().then()
+  'randomize-world': core => {
+    core.randomizeWorld()
     core.sendWorldToAllClients()
   },
-  'clear-world': (core) => {
-    core.clearWorld().then()
+  'clear-world': core => {
+    core.clearWorld()
     core.sendWorldToAllClients()
   },
   'world-update-request': (core, data, socket) => {
@@ -34,17 +34,16 @@ class Core {
     this.network.establish()
 
     Object.keys(clientEvents).map(eventName => {
-      this.network.on(eventName, (data, socket) => {
-        clientEvents[eventName](this, data, socket)
-      })
+      const handler = clientEvents[eventName]
+      this.network.on(eventName, (data, socket) => handler(this, data, socket))
     })
 
-    this.network.on('client-connected', (clientId) => {
+    this.network.on('client-connected', clientId => {
       console.log(`Client ${clientId} connected`)
       this.sendClientDataToAllClients()
     })
 
-    this.network.on('client-disconnected', (clientId) => {
+    this.network.on('client-disconnected', clientId => {
       console.log(`Client ${clientId} disconnected`)
       this.sendClientDataToAllClients()
     })
@@ -54,19 +53,15 @@ class Core {
     this.world.on('world-update', () => {
       this.onWorldUpdate()
     })
-
-    return true
   }
 
-  async startGame () {
+  startGame () {
     try {
       console.log('Starting lifecycle')
-      await this.world.startLifeCycle()
+      this.world.startLifeCycle()
     } catch (e) {
       if (e instanceof Error) {
         console.error(e)
-      } else {
-        console.log(`${e.toString()}`)
       }
     }
   }
@@ -76,12 +71,12 @@ class Core {
     this.sendWorldToAllClients()
   }
 
-  async randomizeWorld () {
-    await this.world.randomize()
+  randomizeWorld () {
+    this.world.randomize()
   }
 
-  async clearWorld () {
-    await this.world.clear()
+  clearWorld () {
+    this.world.clear()
   }
 
   onWorldUpdate () {
