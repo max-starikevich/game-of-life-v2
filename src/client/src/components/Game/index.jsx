@@ -5,6 +5,8 @@ import { World } from './components/World'
 import { Header } from './components/Header'
 import { Controls } from './components/Controls'
 
+const apiUrl = process.env.REACT_APP_API_URL || 'http://localhost:9000'
+
 class Game extends Component {
   constructor () {
     super()
@@ -68,7 +70,7 @@ class Game extends Component {
   }
 
   establishConnection () {
-    this.socket = io('http://localhost:9000')
+    this.socket = io(apiUrl)
 
     this.socket.on('world-update', (...data) => {
       this.onWorldUpdate(...data)

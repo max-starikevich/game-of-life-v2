@@ -1,12 +1,13 @@
 'use strict'
 
+const port = process.env.PORT || 9000
 const Koa = require('koa')
 const Core = require('./src/Core')
 
 const app = new Koa()
 const server = require('http').createServer(app.callback())
 
-server.listen(9000)
+server.listen(port)
 
 const io = require('socket.io')(server)
 const game = new Core(io)

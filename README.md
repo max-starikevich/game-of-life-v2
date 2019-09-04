@@ -4,6 +4,13 @@ It's one more implementation of Conway's Game of Life. This version stands out b
 
 Also you are able to control lifecycle.
 
+## `Quick start` for developers
+
+* clone this repo and jump into the folder
+* open 2 terminal windows and jump into `./src/client` and `./src/server` folders
+* run `yarn start` inside both terminals
+* have fun!
+
 ## Description
 
 The Game of Life, also known simply as Life, is a cellular automaton devised by the British mathematician John Horton Conway in 1970.
@@ -12,7 +19,7 @@ The game is a zero-player game, meaning that its evolution is determined by its 
 
 One interacts with the Game of Life by creating an initial configuration and observing how it evolves, or, for advanced players, by creating patterns with particular properties.
 
-### Rules 
+## Rules 
 
 The universe of the Game of Life is an infinite, two-dimensional orthogonal grid of square cells, each of which is in one of two possible states, alive or dead, (or populated and unpopulated, respectively). Every cell interacts with its eight neighbours, which are the cells that are horizontally, vertically, or diagonally adjacent. At each step in time, the following transitions occur:
 
