@@ -1,5 +1,5 @@
 # stage 1: compile a build
-FROM node:10.15-alpine as CRA
+FROM node:10.16-alpine as create-react-app
 
 USER node
 ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
@@ -18,11 +18,9 @@ COPY src ./src
 RUN yarn build
 
 # stage 2: copy the build artifact to nginx-based image and finish the image
-FROM nginx:1.15-alpine as web-proxy
+FROM nginx:1.15-alpine
 
-COPY --from=CRA /home/node/app/build /usr/share/nginx/html
+COPY --from=create-react-app /home/node/app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
-
-EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]

@@ -20,7 +20,6 @@
   "bugs": {
     "url": "https://github.com/max-starikevich/game-of-life-v2/issues"
   },
-  "homepage": "https://github.com/max-starikevich/game-of-life-v2#readme",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
@@ -41,5 +40,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "http-proxy-middleware": "^0.20.0"
   }
 }

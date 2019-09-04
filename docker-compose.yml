@@ -1,7 +1,9 @@
-version: '2'
+version: '3'
 
 services:
   server:
     build: ./src/server
   client:
     build: ./src/client
+    ports: 
+      - '80:80'

@@ -1,7 +1,7 @@
 const EventEmitter = require('events')
 
 class World extends EventEmitter {
-  constructor (size = [20, 30], rate = 100) {
+  constructor (size = [10, 10], rate = 500) {
     super()
     this.size = size
     this.rate = rate
