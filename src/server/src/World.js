@@ -1,7 +1,7 @@
 const EventEmitter = require('events')
 
 class World extends EventEmitter {
-  constructor (size = [10, 10], rate = 500) {
+  constructor (size = [10, 10], rate = 100) {
     super()
     this.size = size
     this.rate = rate
@@ -33,6 +33,8 @@ class World extends EventEmitter {
     }
 
     this.world = world
+
+    return world
   }
 
   async startLifeCycle (rate = this.rate) {
@@ -42,9 +44,10 @@ class World extends EventEmitter {
 
     try {
       this.cycleIsActive = true
+      this.emit('world-started')
 
       while (1) {
-        const shouldContinue = await this.iterateWorld()
+        const shouldContinue = this.iterateWorld()
 
         if (!shouldContinue) {
           break
@@ -59,12 +62,12 @@ class World extends EventEmitter {
     }
   }
 
-  async iterateWorld () {
+  iterateWorld () {
     if (!this.cycleIsActive) {
       return false
     }
 
-    const { world, lifeCount } = await this.getNextGeneration()
+    const { world, lifeCount } = this.getNextGeneration()
 
     this.world = world
 
@@ -79,9 +82,10 @@ class World extends EventEmitter {
 
   stopLifeCycle () {
     this.cycleIsActive = false
+    this.emit('world-stopped')
   }
 
-  async randomize () {
+  randomize () {
     const world = this.world
 
     for (let i = 0; i < world.length; i++) {
@@ -93,7 +97,7 @@ class World extends EventEmitter {
     return true
   }
 
-  async clear () {
+  clear () {
     const world = this.world
 
     for (let i = 0; i < world.length; i++) {
@@ -105,14 +109,15 @@ class World extends EventEmitter {
     return true
   }
 
-  async getNextGeneration () {
+  getNextGeneration () {
     const world = this.world
-    const nextWorld = JSON.parse(JSON.stringify(world))
+    const nextWorld = [...world]
+
     let lifeCount = 0
 
     for (let i = 0; i < nextWorld.length; i++) {
       for (let j = 0; j < nextWorld[i].length; j++) {
-        const futureCell = await this.getFutureCell(i, j)
+        const futureCell = this.getFutureCell(i, j)
         nextWorld[i][j] = futureCell
 
         if (futureCell.value === 1) {
@@ -137,13 +142,13 @@ class World extends EventEmitter {
 
   modifyCells (cellsToChange = []) {
     cellsToChange.map(cell => {
-      this.modifyCell(cell)
+      this.modifyCell(cell, false)
     })
 
     this.emit('world-update')
   }
 
-  modifyCell (cell, emitUpdate = false) {
+  modifyCell (cell, emitUpdate = true) {
     try {
       const { y, x, value } = cell
 
@@ -169,14 +174,11 @@ class World extends EventEmitter {
     }
   }
 
-  async getFutureCell (y, x) {
+  getFutureCell (y, x) {
     const world = this.world
-    const count = await this.getNeighborCount(y, x, world)
-    let value = 0
-
-    if (count === 3 || (count === 2 && world[y][x].value === 1)) {
-      value = 1
-    }
+    const count = this.getNeighborCount(y, x, world)
+    const isAlive = count === 3 || (count === 2 && world[y][x].value === 1)
+    const value = isAlive ? 1 : 0
 
     return {
       y, x, value
@@ -220,12 +222,47 @@ class World extends EventEmitter {
     , 0)
   }
 
+  importWorldBySchema (schema) {
+    for (let i = 0; i < this.world.length; i++) {
+      for (let j = 0; j < this.world[i].length; j++) {
+        const value = schema[i][j]
+
+        if (value !== 0 && value !== 1) {
+          continue
+        }
+
+        const cell = { y: i, x: j, value: schema[i][j] }
+
+        this.modifyCell(cell)
+      }
+    }
+  }
+
+  importWorld (world) {
+    const cells = world.reduce((cells, row) => {
+      return [
+        ...cells,
+        ...row
+      ]
+    })
+
+    this.modifyCells(cells)
+  }
+
+  getSchema () {
+    return this.world.reduce((rows, row) => ([
+      ...rows,
+      row.map(cell => cell.value)
+    ]), [])
+  }
+
   export () {
     return {
       rate: this.rate,
       size: this.size,
       world: this.world,
-      generation: this.generation
+      generation: this.generation,
+      getSchema: this.getSchema.bind(this)
     }
   }
 }
