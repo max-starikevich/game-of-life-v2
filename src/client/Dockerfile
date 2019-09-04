@@ -1,5 +1,5 @@
 # stage 1: compile a build
-FROM node:10.15-slim as CRA
+FROM node:10.15-alpine as CRA
 
 USER node
 ENV PATH="/home/node/app/node_modules/.bin:${PATH}"
