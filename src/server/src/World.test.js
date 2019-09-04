@@ -2,90 +2,144 @@
 
 const World = require('./World')
 
-describe('class World', () => {
-  const size = [3, 3]
-  const rate = 100
-  const initialValue = 1
+describe('World', () => {
+  it('should have correct structure at the start', () => {
+    const size = [3, 3]
+    const rate = 100
+    const worldManager = new World(size, rate)
 
-  const worldManager = new World(size, rate)
+    worldManager.build()
 
-  it('World object should have correct structure', () => {
-    const example = [
+    const expectedWorld = [
       [
         {
-          x: 0, y: 0, value: initialValue
+          x: 0, y: 0, value: 1
         },
         {
-          x: 1, y: 0, value: initialValue
+          x: 1, y: 0, value: 0
         },
         {
-          x: 2, y: 0, value: initialValue
+          x: 2, y: 0, value: 1
         }
       ],
       [
         {
-          x: 0, y: 1, value: initialValue
+          x: 0, y: 1, value: 0
         },
         {
-          x: 1, y: 1, value: initialValue
+          x: 1, y: 1, value: 1
         },
         {
-          x: 2, y: 1, value: initialValue
+          x: 2, y: 1, value: 0
         }
       ],
       [
         {
-          x: 0, y: 2, value: initialValue
+          x: 0, y: 2, value: 1
         },
         {
-          x: 1, y: 2, value: initialValue
+          x: 1, y: 2, value: 1
         },
         {
-          x: 2, y: 2, value: initialValue
+          x: 2, y: 2, value: 0
         }
       ]
     ]
 
-    worldManager.build(initialValue)
+    worldManager.importWorld(expectedWorld)
 
     const { world } = worldManager.export()
 
-    expect(world).toEqual(example)
+    expect(world).toEqual(expectedWorld)
   })
 
-  it('Cell should be writable', () => {
-    const y = 0
-    const x = 0
-    const value = 1
+  it('should properly make next generations', async () => {
+    const size = [5, 5]
+    const rate = 100
+    const worldManager = new World(size, rate)
 
-    const updatedCell = {
-      y, x, value
-    }
+    worldManager.build()
 
-    worldManager.modifyCell(updatedCell)
-    expect(worldManager.getCell(y, x)).toEqual(updatedCell)
-  })
-
-  it('Multiple cells should be writable', () => {
-    const cells = [
-      {
-        y: 0, x: 0, value: 1
-      },
-      {
-        y: 2, x: 0, value: 1
-      },
-      {
-        y: 0, x: 1, value: 1
-      },
-      {
-        y: 1, x: 1, value: 1
-      }
+    const initialSchema = [
+      [0, 0, 0, 1, 1],
+      [1, 0, 0, 1, 1],
+      [0, 0, 1, 1, 1],
+      [0, 1, 0, 1, 1],
+      [0, 0, 1, 1, 1]
     ]
 
-    worldManager.modifyCells(cells)
+    worldManager.importWorldBySchema(initialSchema)
 
-    for (const cell of cells) {
-      expect(cell).toEqual(worldManager.getCell(cell.y, cell.x))
-    }
+    const expectedSchema = [
+      [0, 0, 0, 1, 1],
+      [1, 0, 0, 1, 1],
+      [0, 0, 1, 1, 1],
+      [0, 1, 0, 1, 1],
+      [0, 0, 1, 1, 1]
+    ]
+
+    worldManager.iterateWorld()
+    worldManager.iterateWorld()
+    worldManager.iterateWorld()
+    worldManager.iterateWorld()
+
+    const resultSchema = worldManager.export().getSchema()
+
+    expect(resultSchema).toEqual(expectedSchema)
+  })
+
+  describe('Cell', () => {
+    it('should change when 1 cell change requested', () => {
+      const size = [3, 3]
+      const rate = 100
+      const worldManager = new World(size, rate)
+
+      worldManager.build()
+
+      const y = 0
+      const x = 0
+      const value = 1
+
+      const updatedCell = {
+        y, x, value
+      }
+
+      worldManager.modifyCells([
+        updatedCell
+      ])
+
+      expect(worldManager.getCell(y, x)).toEqual(updatedCell)
+    })
+
+    it('should change when multiple cells change requested', () => {
+      const size = [3, 3]
+      const rate = 100
+
+      const worldManager = new World(size, rate)
+
+      const cells = [
+        {
+          y: 0, x: 0, value: 1
+        },
+        {
+          y: 2, x: 0, value: 1
+        },
+        {
+          y: 0, x: 1, value: 1
+        },
+        {
+          y: 1, x: 1, value: 1
+        }
+      ]
+
+      worldManager.modifyCells(cells)
+
+      const result = cells.reduce((result, expectedCell) => {
+        const cell = worldManager.getCell(expectedCell.y, expectedCell.x)
+        return !!result || cell === expectedCell
+      })
+
+      expect(result).toEqual(true)
+    })
   })
 })
