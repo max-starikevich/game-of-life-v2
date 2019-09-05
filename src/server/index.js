@@ -2,7 +2,7 @@
 
 const port = process.env.API_PORT || 9000
 const Koa = require('koa')
-const Core = require('./src/Core')
+const Core = require('./src/core')
 
 const app = new Koa()
 const server = require('http').createServer(app.callback())

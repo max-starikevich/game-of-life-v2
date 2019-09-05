@@ -1,6 +1,6 @@
 /* global describe, expect, it */
 
-const World = require('./World')
+const World = require('./world')
 
 describe('World', () => {
   it('should have correct structure at the start', () => {

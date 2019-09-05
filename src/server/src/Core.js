@@ -1,28 +1,7 @@
-const Network = require('./Network')
-const World = require('./World')
+const Network = require('./network')
+const World = require('./world')
 
-const clientEvents = {
-  'stop-lifecycle': core => {
-    core.stopGame()
-  },
-  'start-lifecycle': core => {
-    core.startGame()
-  },
-  'randomize-world': core => {
-    core.randomizeWorld()
-    core.sendWorldToAllClients()
-  },
-  'clear-world': core => {
-    core.clearWorld()
-    core.sendWorldToAllClients()
-  },
-  'world-update-request': (core, data, socket) => {
-    core.sendWorldToClient(socket)
-  },
-  'cells-change': (core, data) => {
-    core.registerCellsChange(data)
-  }
-}
+const clientEvents = require('./events')
 
 class Core {
   constructor (io) {
