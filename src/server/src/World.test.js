@@ -53,7 +53,7 @@ describe('World', () => {
     expect(world).toEqual(expectedWorld)
   })
 
-  it('should properly make next generations', async () => {
+  it('should properly iterate through next generations', async () => {
     const size = [5, 5]
     const rate = 100
     const worldManager = new World(size, rate)
@@ -71,12 +71,14 @@ describe('World', () => {
     worldManager.importWorldBySchema(initialSchema)
 
     const expectedSchema = [
-      [0, 0, 0, 1, 1],
-      [1, 0, 0, 1, 1],
-      [0, 0, 1, 1, 1],
-      [0, 1, 0, 1, 1],
-      [0, 0, 1, 1, 1]
+      [1, 1, 0, 0, 1],
+      [0, 1, 1, 0, 1],
+      [0, 1, 1, 0, 0],
+      [0, 0, 0, 0, 0],
+      [1, 1, 0, 0, 1]
     ]
+
+    worldManager.cycleIsActive = true
 
     worldManager.iterateWorld()
     worldManager.iterateWorld()
@@ -86,6 +88,34 @@ describe('World', () => {
     const resultSchema = worldManager.export().getSchema()
 
     expect(resultSchema).toEqual(expectedSchema)
+  })
+
+  it('should properly work with static figures', async () => {
+    const size = [5, 5]
+    const rate = 100
+    const worldManager = new World(size, rate)
+
+    worldManager.build()
+    worldManager.cycleIsActive = true
+
+    const initialSchema = [
+      [1, 1, 0, 0, 0],
+      [1, 1, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0],
+      [0, 0, 0, 0, 0]
+    ]
+
+    const expectedSchema = initialSchema
+
+    worldManager.importWorldBySchema(initialSchema)
+
+    const repeatTimes = 5
+
+    new Array(repeatTimes).map(() => {
+      worldManager.iterateWorld()
+      expect(worldManager.export().getSchema()).toEqual(expectedSchema)
+    })
   })
 
   describe('Cell', () => {
@@ -104,9 +134,7 @@ describe('World', () => {
         y, x, value
       }
 
-      worldManager.modifyCells([
-        updatedCell
-      ])
+      worldManager.modifyCells([updatedCell])
 
       expect(worldManager.getCell(y, x)).toEqual(updatedCell)
     })
