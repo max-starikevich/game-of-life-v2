@@ -80,10 +80,11 @@ describe('World', () => {
 
     worldManager.cycleIsActive = true
 
-    worldManager.iterateWorld()
-    worldManager.iterateWorld()
-    worldManager.iterateWorld()
-    worldManager.iterateWorld()
+    const repeatTimes = 4
+
+    new Array(repeatTimes).fill().map(() => {
+      worldManager.iterateWorld()
+    })
 
     const resultSchema = worldManager.export().getSchema()
 
@@ -112,7 +113,7 @@ describe('World', () => {
 
     const repeatTimes = 5
 
-    new Array(repeatTimes).map(() => {
+    new Array(repeatTimes).fill().map(() => {
       worldManager.iterateWorld()
       expect(worldManager.export().getSchema()).toEqual(expectedSchema)
     })
