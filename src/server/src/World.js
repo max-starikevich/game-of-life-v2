@@ -34,6 +34,8 @@ class World extends EventEmitter {
 
     this.world = world
 
+    this.emit('world-update')
+
     return world
   }
 
