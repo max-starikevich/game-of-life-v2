@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import io from 'socket.io-client'
 
-import { World } from './components/World'
-import { Header } from './components/Header'
-import { Controls } from './components/Controls'
+import World from './components/World/World'
+import Header from './components/Header'
+import Controls from './components/Controls'
 
 class Game extends Component {
   constructor () {
@@ -58,10 +58,10 @@ class Game extends Component {
         </div>
 
         <Controls
-          stopLifeCycle={this.onStopLifeCycle}
-          startLifeCycle={this.onStartLifeCycle}
-          randomizeWorld={this.onRandomizeWorld}
-          clearWorld={this.onClearWorld}
+          handleStop={this.onStopLifeCycle}
+          handleStart={this.onStartLifeCycle}
+          handleRandomize={this.onRandomizeWorld}
+          handleClear={this.onClearWorld}
         />
       </div>
     )
@@ -196,6 +196,4 @@ class Game extends Component {
   }
 }
 
-export {
-  Game
-}
+export default Game

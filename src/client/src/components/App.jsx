@@ -1,19 +1,17 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-import { Header } from './Layout/Header'
-import { Footer } from './Layout/Footer'
-import { Game } from './Game'
+import Header from './Layout/Header'
+import Footer from './Layout/Footer'
+import Game from './Game/Game'
 
-class App extends Component {
-  render () {
-    return (
-      <div className='app-container'>
-        <Header />
-        <Game />
-        <Footer />
-      </div>
-    )
-  }
+const App = () => {
+  return (
+    <div className='app-container'>
+      <Header />
+      <Game />
+      <Footer />
+    </div>
+  )
 }
 
-export { App }
+export default App

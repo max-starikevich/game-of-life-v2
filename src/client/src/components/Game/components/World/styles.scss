@@ -2,3 +2,30 @@
   display: table;
   border: 1px solid grey;
 }
+
+.row {
+  display: table-row;
+}
+
+.cell {
+  width: 30px;
+  height: 30px;
+
+  display: table-cell;
+
+  border: 1px solid white;
+
+  cursor: pointer;
+
+  &.dead {
+    background-color: #e3e3e3;
+
+    &:hover {
+      background-color: red;
+    }
+  }
+
+  &.alive {
+    background-color: black;
+  }
+}
