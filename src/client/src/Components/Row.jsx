@@ -1,5 +1,5 @@
 import React from 'react'
-import Cell from './Cell'
+import Cell from 'Components/Cell'
 
 const Row = ({ cells }) => {
   return (

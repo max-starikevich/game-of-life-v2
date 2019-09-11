@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Header = ({ generation, rate, size, clientsCount }) => {
+const Stats = ({ generation, rate, size, clientsCount }) => {
   if (!generation || !rate || !size) {
     return null
   }
@@ -15,4 +15,4 @@ const Header = ({ generation, rate, size, clientsCount }) => {
   )
 }
 
-export default Header
+export default Stats

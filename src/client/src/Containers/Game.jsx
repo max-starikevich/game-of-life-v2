@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
 import io from 'socket.io-client'
 
-import World from './components/World/World'
-import Header from './components/Header'
-import Controls from './components/Controls'
+import World from 'Components/World'
+import Stats from 'Components/Stats'
+import Controls from 'Components/Controls'
 
 class Game extends Component {
   constructor () {
@@ -41,7 +41,7 @@ class Game extends Component {
 
     return (
       <div className='game'>
-        <Header
+        <Stats
           generation={this.state.generation}
           rate={this.state.rate}
           size={this.state.size}

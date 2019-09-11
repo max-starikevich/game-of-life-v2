@@ -1,6 +1,7 @@
 import React from 'react'
-import Row from './components/Row'
-import './styles.scss'
+import Row from 'Components/Row'
+
+import './World.styles.scss'
 
 const World = ({ world }) => {
   if (!world) {
